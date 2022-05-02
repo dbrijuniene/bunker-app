@@ -22,10 +22,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [error, setError] = useState<AuthContextType['error']>(null);
 
   const login: AuthContextType['login'] = async (crudentials: Crudentials, next) => {
-    if (error) {
-      setError(null);
-    }
     try {
+      if (error) {
+        setError(null);
+      }
+
       const loggedInUser = await AuthService.login(crudentials);
       setLoggedIn(true);
       setUser(loggedInUser);

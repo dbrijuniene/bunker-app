@@ -33,6 +33,7 @@ const Dashboard: React.FC = () => (
         Get Started
       </Button>
     </Box>
+    <img style={{ width: '900px', height: '500px' }} src="main-foto.webp" alt="home-page-foto" />
   </Container>
 );
 

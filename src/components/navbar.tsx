@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
-  AppBar, Toolbar, Container, styled,
+  AppBar, Toolbar, Container, styled, Button, Typography, Box,
 } from '@mui/material';
 import { NavLink } from 'react-router-dom';
+import AuthContext from '../features/auth/auth-context';
 
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
   display: 'inline-flex',
@@ -22,17 +23,31 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
   },
 }));
 
-const Navbar: React.FC = () => (
-  <AppBar position="static" sx={{ bgcolor: 'white' }}>
-    <Container sx={{ px: { xs: 0, sm: 0 } }}>
-      <Toolbar>
-        <img style={{ width: '150px', height: '100px' }} src="Bunker_logo.jpg" alt="bunker" />
-        <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
-        <StyledNavLink to="/add-new-items">Add new items</StyledNavLink>
-        <StyledNavLink to="/settings">Settings</StyledNavLink>
-      </Toolbar>
-    </Container>
-  </AppBar>
-);
+const Navbar: React.FC = () => {
+  const { logout, user } = useContext(AuthContext);
+
+  const helloText = `Hello, ${user?.name} ${user?.surname}`;
+  const handleClick = () => {
+    logout();
+  };
+
+  return (
+    <AppBar position="static" sx={{ bgcolor: 'white' }}>
+      <Container sx={{ px: { xs: 0, sm: 0 } }}>
+        <Toolbar>
+          <img style={{ width: '150px', height: '100px' }} src="Bunker_logo.jpg" alt="bunker" />
+          <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
+          <StyledNavLink to="/add-new-items">Add new items</StyledNavLink>
+          <StyledNavLink to="/settings">Settings</StyledNavLink>
+          <Box sx={{ flexGrow: 2 }} />
+          <Typography sx={{ margin: '0 16px' }} color="black">{helloText}</Typography>
+          <Button variant="contained" onClick={handleClick}>
+            Log out
+          </Button>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+};
 
 export default Navbar;
