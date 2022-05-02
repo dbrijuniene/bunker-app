@@ -28,7 +28,7 @@ module.exports = {
   rules: {
     quotes: [2, 'single'],
     'quote-props': [2, 'as-needed'],
-    'linebreak-style': [2, 'unix'],
+    'linebreak-style': [0, 'unix'],
     'react/prop-types': [0],
     'max-len': [0],
     'jsx-a11y/label-has-associated-control': [0],
