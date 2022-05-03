@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Kotryna",
+      "surname": "Skrabalienė",
+      "email": "skrabaliene@gmail.com",
+      "password": "123",
+      "img": "https://avatars.githubusercontent.com/u/5399488?s=400&v=4"
+    },
+    {
+      "id": "2",
+      "name": "Kristupas",
+      "surname": "Bakas",
+      "email": "bakas@gmail.com",
+      "password": "1234",
+      "img": "https://media.istockphoto.com/photos/confused-nerd-guy-picture-id168250344?k=20&m=168250344&s=612x612&w=0&h=V7seKY4kuNv1Uym-2J3trEo_ZOOVMCQAR3eqlBnFNVo="
+    },
+    {
+      "id": "3",
+      "name": "Rasa",
+      "surname": "Vilkas",
+      "email": "vilkas@gmail.com",
+      "password": "12345",
+      "img": "https://media.istockphoto.com/photos/geeky-girl-picture-id536217043?k=20&m=536217043&s=612x612&w=0&h=8WxDgS_PY_PO5Iu8xsjNKSuFfpwtoyI-08uLsFxOiZg="
+    }
+  ]
+}
