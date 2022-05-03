@@ -1,24 +1,28 @@
-// import axios from 'axios';
-// import { Crudentials, User, TemporaryUser } from '../../types';
-import { Crudentials, User } from '../../types';
-import data from '../../data/data';
-
 /* eslint-disable @typescript-eslint/no-namespace */
+import axios from 'axios';
+import { Crudentials, TemporaryUser, User } from '../../types';
+
 namespace AuthService {
 
   export const login = async ({ email, password }: Crudentials): Promise<User> => {
-    // NEVEIKIA const { data: tempUsers } = await axios.get<TemporaryUser[]>(`http://localhost:8000/users?email=${email}`);
-    const user = data.users.find((u) => u.email === email);
-
-    if (!user) {
+    const { data: tempUsers } = await axios.get<TemporaryUser[]>(`http://localhost:8000/users?email=${email}`);
+    if (tempUsers.length === 0) {
       throw new Error('User with such email was not found');
     }
 
-    if (user.password !== password) {
+    const [tempUser] = tempUsers;
+
+    if (tempUser.password !== password) {
       throw new Error('Passwords do not match');
     }
 
-    return user;
+    return {
+      id: tempUser.id,
+      name: tempUser.name,
+      surname: tempUser.surname,
+      email: tempUser.email,
+      img: tempUser.img,
+    };
   };
 
 }

@@ -9,7 +9,7 @@ const themeColors = createTheme({
       contrastText: '#ffffff',
     },
     background: {
-      default: '#fafafa',
+      default: 'white',
     },
   },
 });
