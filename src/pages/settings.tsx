@@ -25,8 +25,6 @@ const Settings: React.FC = () => (
       <Button
         variant="contained"
         sx={{
-          fontWeight: 'bold',
-          borderRadius: '7px',
           bgcolor: '#e44232',
         }}
       >

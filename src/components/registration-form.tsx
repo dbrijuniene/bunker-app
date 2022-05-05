@@ -14,7 +14,6 @@ type AuthFormProps = {
   formTitle: string,
   submitText: string,
   onSubmit?: React.FormEventHandler<HTMLFormElement>,
-  footer?: React.ReactElement
 };
 
 const contentWidth = 400;
@@ -24,7 +23,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
   submitText,
   onSubmit,
   children,
-  footer,
 }) => {
   const { error, clearError } = useContext(AuthContext);
 
@@ -74,9 +72,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           {children}
         </Box>
         <Button variant="contained" type="submit">{submitText}</Button>
-
       </Paper>
-      {footer}
     </Container>
   );
 };

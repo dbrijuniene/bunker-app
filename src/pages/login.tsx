@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import AuthContext from '../features/auth/auth-context';
 import AuthForm from '../components/auth-form';
 
@@ -18,6 +18,7 @@ const LoginPage: React.FC = () => {
       formTitle="Login"
       submitText="Login"
       onSubmit={handleSubmit}
+      footer={<Box component="p">This is footer</Box>}
     >
       <TextField
         type="email"
