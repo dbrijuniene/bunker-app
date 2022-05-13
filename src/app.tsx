@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './features/auth/auth-context';
-
 import Main from './pages/main';
 import AddNewItems from './pages/add-new-items';
 import Settings from './pages/settings';

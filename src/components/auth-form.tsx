@@ -6,6 +6,7 @@ import {
   Container,
   Paper,
   Typography,
+  Divider,
 } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 import AuthContext from '../features/auth/auth-context';
@@ -14,7 +15,8 @@ type AuthFormProps = {
   formTitle: string,
   submitText: string,
   onSubmit?: React.FormEventHandler<HTMLFormElement>,
-  footer?: React.ReactElement
+  onCancel?: React.MouseEventHandler,
+  cancelText?: string
 };
 
 const contentWidth = 400;
@@ -24,7 +26,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
   submitText,
   onSubmit,
   children,
-  footer,
+  onCancel,
+  cancelText,
 }) => {
   const { error, clearError } = useContext(AuthContext);
 
@@ -74,9 +77,13 @@ const AuthForm: React.FC<AuthFormProps> = ({
           {children}
         </Box>
         <Button variant="contained" type="submit">{submitText}</Button>
-
+        {onCancel && (
+        <>
+          <Divider />
+          <Button variant="contained" onClick={onCancel}>{cancelText}</Button>
+        </>
+        )}
       </Paper>
-      {footer}
     </Container>
   );
 };
