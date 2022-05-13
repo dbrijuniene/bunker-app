@@ -1,10 +1,9 @@
 type TemporaryUser = {
-  id: string,
+  id: number,
   name: string,
   email: string,
   password: string,
-  surname: string,
-  img: string,
+  surname: string
 };
 
 export default TemporaryUser;

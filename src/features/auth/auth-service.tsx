@@ -21,7 +21,6 @@ namespace AuthService {
       name: tempUser.name,
       surname: tempUser.surname,
       email: tempUser.email,
-      img: tempUser.img,
     };
   };
 
