@@ -20,20 +20,20 @@ const LoginPage: React.FC = () => {
         .email('Invalid email adress')
         .required('Required'),
       password: Yup.string()
-        .max(20, 'Must be 20 characters or less')
+        .min(8, 'Must be at least 8 characters')
         .required('Requider'),
     }),
+
     onSubmit: (values) => {
       const crudential: Crudentials = {
         email: values.email,
         password: values.password,
       };
+
       login(crudential, '/dashboard');
     },
-    onReset: (_, { resetForm }) => {
-      resetForm();
-      navigate('/registration');
-    },
+
+    onReset: () => navigate('/registration'),
   });
 
   return (
@@ -59,7 +59,7 @@ const LoginPage: React.FC = () => {
       <TextField
         id="password"
         name="password"
-        type="text"
+        type="password"
         label="Password"
         fullWidth
         onChange={formik.handleChange}
