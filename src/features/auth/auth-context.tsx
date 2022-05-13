@@ -1,6 +1,8 @@
 import React, { createContext, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Crudentials, User } from '../../types';
+import {
+  Crudentials, User, UserRegistration,
+} from '../../types';
 import useLocalStorage from '../../hooks/use-local-storage-state';
 import AuthService from './auth-service';
 
@@ -11,6 +13,7 @@ export type AuthContextType = {
   clearError: VoidFunction,
   login: (crudentials: Crudentials, next: string) => void,
   logout: VoidFunction,
+  register: (userRegistration: UserRegistration) => void
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -21,16 +24,35 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useLocalStorage<AuthContextType['user']>('user', null);
   const [error, setError] = useState<AuthContextType['error']>(null);
 
+  const loginViaCrudentials = async (crudentials: Crudentials) => {
+    const loggedInUser = await AuthService.login(crudentials);
+    setLoggedIn(true);
+    setUser(loggedInUser);
+  };
+
   const login: AuthContextType['login'] = async (crudentials: Crudentials, next) => {
     try {
       if (error) {
         setError(null);
       }
 
-      const loggedInUser = await AuthService.login(crudentials);
-      setLoggedIn(true);
-      setUser(loggedInUser);
+      loginViaCrudentials(crudentials);
       navigate(next);
+    } catch (err) {
+      const { message } = (err as Error);
+      setError(message);
+    }
+  };
+
+  const register: AuthContextType['register'] = async (userRegistration: UserRegistration) => {
+    try {
+      if (error) {
+        setError(null);
+      }
+
+      const crudentials: Crudentials = await AuthService.register(userRegistration);
+      loginViaCrudentials(crudentials);
+      navigate('/dashboard');
     } catch (err) {
       const { message } = (err as Error);
       setError(message);
@@ -53,6 +75,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     clearError,
     login,
     logout,
+    register,
   }), [loggedIn, user, error]);
 
   return (
