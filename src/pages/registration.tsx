@@ -1,5 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { TextField } from '@mui/material';
 import AuthForm from '../components/auth-form';
 import AuthContext from '../features/auth/auth-context';
@@ -8,80 +10,116 @@ import { UserRegistration } from '../types';
 const RegisterPage: React.FC = () => {
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [name, setName] = useState<string>('');
-  const [surname, setSurname] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [repeatPassword, setRepeatPassword] = useState<string>('');
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      surname: '',
+      email: '',
+      password: '',
+      repeatPassword: '',
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .min(2, 'Must be at least 2 characters')
+        .required('Required'),
+      surname: Yup.string()
+        .min(2, 'Must be at least 2 characters')
+        .required('Required'),
+      email: Yup.string()
+        .email('Invalid email adress')
+        .required('Required'),
+      password: Yup.string()
+        .min(8, 'Must be at least 8 characters')
+        .required('Requider'),
+      repeatPassword: Yup.string()
+        .min(8, 'Must be at least 8 characters')
+        .required('Requider')
+        .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+    }),
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
+    onSubmit: (values) => {
+      const userRegistration: UserRegistration = {
+        name: values.name,
+        surname: values.surname,
+        email: values.email,
+        password: values.password,
+        repeatPassword: values.repeatPassword,
+      };
 
-    const userRegistration: UserRegistration = {
-      name,
-      surname,
-      email,
-      password,
-      repeatPassword,
-    };
+      register(userRegistration);
+    },
 
-    register(userRegistration);
-  };
-
-  const handleCancel: React.MouseEventHandler<Element> = (e) => {
-    e.preventDefault();
-
-    setName('');
-    setSurname('');
-    setEmail('');
-    setPassword('');
-    setRepeatPassword('');
-
-    navigate('/');
-  };
+    onReset: () => navigate('/'),
+  });
 
   return (
     <AuthForm
       formTitle="Register"
       submitText="Sing up"
-      onSubmit={handleSubmit}
-      onCancel={handleCancel}
-      cancelText="Cancel"
+      onSubmit={formik.handleSubmit}
+      onReset={formik.handleReset}
+      disabled={!(formik.isValid && formik.dirty)}
+      resetText="Cancel"
     >
       <TextField
-        type="name"
+        id="name"
+        name="name"
+        type="text"
         label="Name"
         fullWidth
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.name}
+        error={formik.touched.name && Boolean(formik.errors.name)}
+        helperText={formik.touched.name && formik.errors.name}
       />
       <TextField
-        type="surname"
+        id="surname"
+        name="surname"
+        type="text"
         label="Surname"
         fullWidth
-        value={surname}
-        onChange={(e) => setSurname(e.target.value)}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.surname}
+        error={formik.touched.surname && Boolean(formik.errors.surname)}
+        helperText={formik.touched.surname && formik.errors.surname}
       />
       <TextField
-        type="email"
+        id="email"
+        name="email"
+        type="text"
         label="Email"
         fullWidth
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.email}
+        error={formik.touched.email && Boolean(formik.errors.email)}
+        helperText={formik.touched.email && formik.errors.email}
       />
       <TextField
+        id="password"
+        name="password"
         type="password"
         label="Password"
         fullWidth
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.password}
+        error={formik.touched.password && Boolean(formik.errors.password)}
+        helperText={formik.errors.password && formik.errors.password}
       />
       <TextField
+        id="repeatPassword"
+        name="repeatPassword"
         type="password"
         label="Repeat password"
         fullWidth
-        value={repeatPassword}
-        onChange={(e) => setRepeatPassword(e.target.value)}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.repeatPassword}
+        error={formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword)}
+        helperText={formik.errors.repeatPassword && formik.errors.repeatPassword}
       />
     </AuthForm>
   );
