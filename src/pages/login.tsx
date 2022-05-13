@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { Crudentials } from '../types';
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -20,7 +21,6 @@ const LoginPage: React.FC = () => {
         .email('Invalid email adress')
         .required('Required'),
       password: Yup.string()
-        .min(8, 'Must be at least 8 characters')
         .required('Requider'),
     }),
 

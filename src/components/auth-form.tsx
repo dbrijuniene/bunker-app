@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Alert,
   Box,
@@ -7,6 +7,7 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import KeyIcon from '@mui/icons-material/Key';
 import AuthContext from '../features/auth/auth-context';
 
@@ -30,7 +31,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   resetText,
   disabled,
 }) => {
-  const { error, clearError } = useContext(AuthContext);
+  const { error, clearError, loading } = useContext(AuthContext);
 
   return (
     <Container sx={{ position: 'relative', pt: 20 }}>
@@ -77,7 +78,14 @@ const AuthForm: React.FC<AuthFormProps> = ({
         >
           {children}
         </Box>
-        <Button disabled={disabled} variant="outlined" type="submit">{submitText}</Button>
+        <LoadingButton
+          loading={loading}
+          disabled={disabled}
+          variant="outlined"
+          type="submit"
+        >
+          {submitText}
+        </LoadingButton>
         {onReset && (
           <Button variant="text" type="reset" onClick={onReset}>{resetText}</Button>
         )}

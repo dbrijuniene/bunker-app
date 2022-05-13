@@ -13,7 +13,8 @@ export type AuthContextType = {
   clearError: VoidFunction,
   login: (crudentials: Crudentials, next: string) => void,
   logout: VoidFunction,
-  register: (userRegistration: UserRegistration) => void
+  register: (userRegistration: UserRegistration) => void,
+  loading: boolean
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -23,6 +24,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [loggedIn, setLoggedIn] = useLocalStorage<AuthContextType['loggedIn']>('loggedIn', false);
   const [user, setUser] = useLocalStorage<AuthContextType['user']>('user', null);
   const [error, setError] = useState<AuthContextType['error']>(null);
+  const [loading, setLoading] = useState(false);
 
   const loginViaCrudentials = async (crudentials: Crudentials) => {
     const loggedInUser = await AuthService.login(crudentials);
@@ -32,6 +34,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login: AuthContextType['login'] = async (crudentials: Crudentials, next) => {
     try {
+      setLoading(true);
       if (error) {
         setError(null);
       }
@@ -41,11 +44,14 @@ export const AuthProvider: React.FC = ({ children }) => {
     } catch (err) {
       const { message } = (err as Error);
       setError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const register: AuthContextType['register'] = async (userRegistration: UserRegistration) => {
     try {
+      setLoading(true);
       if (error) {
         setError(null);
       }
@@ -56,6 +62,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     } catch (err) {
       const { message } = (err as Error);
       setError(message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,7 +84,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     login,
     logout,
     register,
-  }), [loggedIn, user, error]);
+    loading,
+  }), [loggedIn, user, error, loading]);
 
   return (
     <AuthContext.Provider value={providerValue}>
