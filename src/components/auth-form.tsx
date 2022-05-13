@@ -15,7 +15,8 @@ type AuthFormProps = {
   submitText: string,
   onSubmit?: React.FormEventHandler<HTMLFormElement>,
   onReset?: React.MouseEventHandler<Element>,
-  resetText?: string
+  resetText?: string,
+  disabled: boolean
 };
 
 const contentWidth = 400;
@@ -27,6 +28,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   children,
   onReset,
   resetText,
+  disabled,
 }) => {
   const { error, clearError } = useContext(AuthContext);
 
@@ -75,7 +77,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         >
           {children}
         </Box>
-        <Button variant="outlined" type="submit">{submitText}</Button>
+        <Button disabled={disabled} variant="outlined" type="submit">{submitText}</Button>
         {onReset && (
           <Button variant="text" type="reset" onClick={onReset}>{resetText}</Button>
         )}

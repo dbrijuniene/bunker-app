@@ -42,6 +42,7 @@ const LoginPage: React.FC = () => {
       submitText="Login"
       onSubmit={formik.handleSubmit}
       onReset={formik.handleReset}
+      disabled={!(formik.isValid && formik.dirty)}
       resetText="Sign up"
     >
       <TextField

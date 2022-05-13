@@ -58,6 +58,7 @@ const RegisterPage: React.FC = () => {
       submitText="Sing up"
       onSubmit={formik.handleSubmit}
       onReset={formik.handleReset}
+      disabled={!(formik.isValid && formik.dirty)}
       resetText="Cancel"
     >
       <TextField
