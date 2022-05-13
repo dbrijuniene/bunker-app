@@ -28,7 +28,7 @@ const RegisterPage: React.FC = () => {
     register(userRegistration);
   };
 
-  const handleCancel: React.MouseEventHandler<Element> = (e) => {
+  const handleReset: React.MouseEventHandler<Element> = (e) => {
     e.preventDefault();
 
     setName('');
@@ -45,8 +45,8 @@ const RegisterPage: React.FC = () => {
       formTitle="Register"
       submitText="Sing up"
       onSubmit={handleSubmit}
-      onCancel={handleCancel}
-      cancelText="Cancel"
+      onReset={handleReset}
+      resetText="Cancel"
     >
       <TextField
         type="name"
