@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import axios from 'axios';
-import { Crudentials, TemporaryUser, User } from '../../types';
+import {
+  Crudentials, TemporaryUser, User, UserRegistration,
+} from '../../types';
 
 namespace AuthService {
 
@@ -21,8 +23,30 @@ namespace AuthService {
       name: tempUser.name,
       surname: tempUser.surname,
       email: tempUser.email,
-      img: tempUser.img,
     };
+  };
+
+  export const register = async (userRegistrantion: UserRegistration): Promise<Crudentials> => {
+    const { data: tempUsers } = await axios.get<TemporaryUser[]>('http://localhost:8000/users');
+
+    if (!(userRegistrantion.email && userRegistrantion.name && userRegistrantion.password && userRegistrantion.repeatPassword && userRegistrantion.surname)) {
+      throw new Error('Missing data');
+    }
+    if (userRegistrantion.password !== userRegistrantion.repeatPassword) {
+      throw new Error('Passwords do not match');
+    }
+
+    const newUser: TemporaryUser = {
+      id: tempUsers.length || 0,
+      email: userRegistrantion.email,
+      name: userRegistrantion.name,
+      password: userRegistrantion.password,
+      surname: userRegistrantion.surname,
+    };
+
+    const { data: createdUser } = await axios.post<TemporaryUser>('http://localhost:8000/users', newUser);
+
+    return { email: createdUser.email, password: createdUser.password };
   };
 
 }

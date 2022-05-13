@@ -6,7 +6,6 @@ import {
   Container,
   Paper,
   Typography,
-  Divider,
 } from '@mui/material';
 import KeyIcon from '@mui/icons-material/Key';
 import AuthContext from '../features/auth/auth-context';
@@ -15,7 +14,7 @@ type AuthFormProps = {
   formTitle: string,
   submitText: string,
   onSubmit?: React.FormEventHandler<HTMLFormElement>,
-  onCancel?: React.MouseEventHandler,
+  onCancel?: React.MouseEventHandler<Element>,
   cancelText?: string
 };
 
@@ -76,12 +75,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
         >
           {children}
         </Box>
-        <Button variant="contained" type="submit">{submitText}</Button>
+        <Button variant="outlined" type="submit">{submitText}</Button>
         {onCancel && (
-        <>
-          <Divider />
-          <Button variant="contained" onClick={onCancel}>{cancelText}</Button>
-        </>
+          <Button variant="text" type="reset" onClick={onCancel}>{cancelText}</Button>
         )}
       </Paper>
     </Container>
