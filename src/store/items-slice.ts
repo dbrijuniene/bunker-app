@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/default-param-last */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../types/index';
 
 const initialState: RootState = {
@@ -52,7 +51,14 @@ const initialState: RootState = {
 export const itemsSlice = createSlice({
   name: 'items',
   initialState,
-  reducers: {},
+  reducers: {
+    remove:
+      (state: RootState, action: PayloadAction<number>) => {
+        state.items.splice(action.payload, 1);
+      },
+  },
 });
+
+export const { remove } = itemsSlice.actions;
 
 export default itemsSlice.reducer;
