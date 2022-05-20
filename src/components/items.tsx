@@ -37,7 +37,9 @@ const Items: React.FC = () => {
               <TableCell align="right">{row.quantity}</TableCell>
               <TableCell align="center">{row.units}</TableCell>
               <TableCell align="right">{row.validUntil}</TableCell>
-              <TableCell align="right"><IconButton onClick={() => dispatch(remove(i))}><DeleteForeverIcon /></IconButton></TableCell>
+              <TableCell align="right">
+                <IconButton onClick={() => dispatch(remove(i))}><DeleteForeverIcon /></IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
