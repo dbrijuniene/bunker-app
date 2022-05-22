@@ -1,20 +1,19 @@
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Crudentials, User, UserRegistration,
 } from '../../types';
 import useLocalStorage from '../../hooks/use-local-storage-state';
 import AuthService from './auth-service';
+import { useRootSelector, useAppDispatch } from '../../store/hooks';
+import { resetServerErrorMsg, setLoading, setServerErrorMsg } from '../../store/shared-slice';
 
 export type AuthContextType = {
   user: null | User,
   loggedIn: boolean,
-  error: string | null,
-  clearError: VoidFunction,
   login: (crudentials: Crudentials, next: string) => void,
   logout: VoidFunction,
   register: (userRegistration: UserRegistration) => void,
-  loading: boolean
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -23,8 +22,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useLocalStorage<AuthContextType['loggedIn']>('loggedIn', false);
   const [user, setUser] = useLocalStorage<AuthContextType['user']>('user', null);
-  const [error, setError] = useState<AuthContextType['error']>(null);
-  const [loading, setLoading] = useState(false);
+  const serverErrorMsg = useRootSelector((state) => state.shared.serverErrorMsg);
+  const dispatch = useAppDispatch();
 
   const loginViaCrudentials = async (crudentials: Crudentials) => {
     const loggedInUser = await AuthService.login(crudentials);
@@ -34,36 +33,36 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login: AuthContextType['login'] = async (crudentials: Crudentials, next) => {
     try {
-      setLoading(true);
-      if (error) {
-        setError(null);
+      dispatch(setLoading(true));
+      if (serverErrorMsg) {
+        dispatch(resetServerErrorMsg());
       }
 
-      loginViaCrudentials(crudentials);
+      await loginViaCrudentials(crudentials);
       navigate(next);
     } catch (err) {
       const { message } = (err as Error);
-      setError(message);
+      dispatch(setServerErrorMsg(message));
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
   const register: AuthContextType['register'] = async (userRegistration: UserRegistration) => {
     try {
-      setLoading(true);
-      if (error) {
-        setError(null);
+      dispatch(setLoading(true));
+      if (serverErrorMsg) {
+        dispatch(resetServerErrorMsg());
       }
 
       const crudentials: Crudentials = await AuthService.register(userRegistration);
-      loginViaCrudentials(crudentials);
+      await loginViaCrudentials(crudentials);
       navigate('/dashboard');
     } catch (err) {
       const { message } = (err as Error);
-      setError(message);
+      dispatch(setServerErrorMsg(message));
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
@@ -72,20 +71,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     navigate('/');
   };
 
-  const clearError: AuthContextType['clearError'] = () => {
-    setError(null);
-  };
-
   const providerValue = useMemo(() => ({
     user,
     loggedIn,
-    error,
-    clearError,
     login,
     logout,
     register,
-    loading,
-  }), [loggedIn, user, error, loading]);
+  }), [loggedIn, user]);
 
   return (
     <AuthContext.Provider value={providerValue}>

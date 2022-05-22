@@ -11,8 +11,8 @@ import RegisterPage from './pages/registration';
 import store from './store';
 
 const App: React.FC = () => (
-  <AuthProvider>
-    <Provider store={store}>
+  <Provider store={store}>
+    <AuthProvider>
       <Routes>
         <Route path="/" element={<Main />}>
           <Route index element={<LoginPage />} />
@@ -22,8 +22,8 @@ const App: React.FC = () => (
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
-    </Provider>
-  </AuthProvider>
+    </AuthProvider>
+  </Provider>
 );
 
 export default App;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Alert,
   Box,
@@ -9,7 +9,8 @@ import {
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import KeyIcon from '@mui/icons-material/Key';
-import AuthContext from '../features/auth/auth-context';
+import { useAppDispatch, useRootSelector } from '../store/hooks';
+import { resetServerErrorMsg } from '../store/shared-slice';
 
 type AuthFormProps = {
   formTitle: string,
@@ -31,11 +32,13 @@ const AuthForm: React.FC<AuthFormProps> = ({
   resetText,
   disabled,
 }) => {
-  const { error, clearError, loading } = useContext(AuthContext);
+  const loading = useRootSelector((state) => state.shared.loading);
+  const serverErrorMsg = useRootSelector((state) => state.shared.serverErrorMsg);
+  const dispatch = useAppDispatch();
 
   return (
     <Container sx={{ position: 'relative', pt: 20 }}>
-      {error && (
+      {serverErrorMsg && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Alert
             sx={{
@@ -45,9 +48,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
               mt: 12,
             }}
             color="error"
-            onClose={clearError}
+            onClose={() => dispatch(resetServerErrorMsg())}
           >
-            {error}
+            {serverErrorMsg}
           </Alert>
         </Box>
       )}

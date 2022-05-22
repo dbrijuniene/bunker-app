@@ -20,6 +20,13 @@
       "surname": "Vilkas",
       "email": "vilkas@gmail.com",
       "password": "12345"
+    },
+    {
+      "id": 3,
+      "name": "a",
+      "surname": "a",
+      "email": "a@a.a",
+      "password": "a"
     }
   ]
 }
