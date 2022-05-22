@@ -5,6 +5,8 @@ import {
 } from '../../types';
 import useLocalStorage from '../../hooks/use-local-storage-state';
 import AuthService from './auth-service';
+import { useRootSelector, useAppDispatch } from '../../store/hooks';
+import { setLoading } from '../../store/shared-slice';
 
 export type AuthContextType = {
   user: null | User,
@@ -24,7 +26,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [loggedIn, setLoggedIn] = useLocalStorage<AuthContextType['loggedIn']>('loggedIn', false);
   const [user, setUser] = useLocalStorage<AuthContextType['user']>('user', null);
   const [error, setError] = useState<AuthContextType['error']>(null);
-  const [loading, setLoading] = useState(false);
+  const loading = useRootSelector((state) => state.shared.loading);
+  const dispatch = useAppDispatch();
 
   const loginViaCrudentials = async (crudentials: Crudentials) => {
     const loggedInUser = await AuthService.login(crudentials);
@@ -34,7 +37,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login: AuthContextType['login'] = async (crudentials: Crudentials, next) => {
     try {
-      setLoading(true);
+      dispatch(setLoading(true));
       if (error) {
         setError(null);
       }
@@ -45,13 +48,13 @@ export const AuthProvider: React.FC = ({ children }) => {
       const { message } = (err as Error);
       setError(message);
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
 
   const register: AuthContextType['register'] = async (userRegistration: UserRegistration) => {
     try {
-      setLoading(true);
+      dispatch(setLoading(true));
       if (error) {
         setError(null);
       }
@@ -63,7 +66,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       const { message } = (err as Error);
       setError(message);
     } finally {
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
 

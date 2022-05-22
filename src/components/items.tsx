@@ -9,10 +9,10 @@ import Paper from '@mui/material/Paper';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
 import { useRootSelector, useAppDispatch } from '../store/hooks';
-import { remove } from '../store/items-slice';
+import { removeItem } from '../store/items-slice';
 
 const Items: React.FC = () => {
-  const rootItems = useRootSelector((state) => state.items);
+  const items = useRootSelector((state) => state.items);
   const dispatch = useAppDispatch();
 
   return (
@@ -28,7 +28,7 @@ const Items: React.FC = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rootItems.map((row, i) => (
+          {items.map((row, i) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -38,7 +38,7 @@ const Items: React.FC = () => {
               <TableCell align="center">{row.units}</TableCell>
               <TableCell align="right">{row.validUntil}</TableCell>
               <TableCell align="right">
-                <IconButton onClick={() => dispatch(remove(i))}><DeleteForeverIcon /></IconButton>
+                <IconButton onClick={() => dispatch(removeItem(i))}><DeleteForeverIcon /></IconButton>
               </TableCell>
             </TableRow>
           ))}

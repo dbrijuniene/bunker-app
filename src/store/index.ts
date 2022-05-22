@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import itemsReducer from './items-slice';
+import sharedReducer from './shared-slice';
 
 const store = configureStore({
-  reducer: itemsReducer,
+  reducer: { shared: sharedReducer, items: itemsReducer },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
