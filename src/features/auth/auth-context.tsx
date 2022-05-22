@@ -42,7 +42,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         setError(null);
       }
 
-      loginViaCrudentials(crudentials);
+      await loginViaCrudentials(crudentials);
       navigate(next);
     } catch (err) {
       const { message } = (err as Error);
@@ -60,7 +60,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       }
 
       const crudentials: Crudentials = await AuthService.register(userRegistration);
-      loginViaCrudentials(crudentials);
+      await loginViaCrudentials(crudentials);
       navigate('/dashboard');
     } catch (err) {
       const { message } = (err as Error);
