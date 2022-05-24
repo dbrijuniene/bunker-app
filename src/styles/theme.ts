@@ -3,13 +3,13 @@ import { createTheme } from '@mui/material';
 const themeColors = createTheme({
   palette: {
     primary: {
-      main: '#fc5203',
-      light: '#ff6f2b',
-      dark: '#1f1f1f',
+      main: '#FF6701',
+      // oranzine spalva
+      light: '#ffffff',
+      // balta
+      dark: '#180A0A',
+      // juoda
       contrastText: '#ffffff',
-    },
-    background: {
-      default: 'white',
     },
   },
 });
