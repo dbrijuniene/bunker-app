@@ -47,7 +47,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
               minWidth: contentWidth,
               mt: 12,
             }}
-            color="error"
             onClose={() => dispatch(resetServerErrorMsg())}
           >
             {serverErrorMsg}

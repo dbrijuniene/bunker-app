@@ -2,27 +2,13 @@
   "users": [
     {
       "id": 0,
-      "name": "Kotryna",
-      "surname": "Skrabalienė",
-      "email": "skrabaliene@gmail.com",
-      "password": "123"
-    },
-    {
-      "id": 1,
-      "name": "Kristupas",
-      "surname": "Bakas",
-      "email": "bakas@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": 2,
       "name": "Rasa",
       "surname": "Vilkas",
       "email": "vilkas@gmail.com",
       "password": "12345"
     },
     {
-      "id": 3,
+      "id": 1,
       "name": "a",
       "surname": "a",
       "email": "a@a.a",
