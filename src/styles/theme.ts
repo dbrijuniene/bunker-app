@@ -1,17 +1,20 @@
 import { createTheme } from '@mui/material';
 
-const themeColors = createTheme({
+const themeStyle = createTheme({
   palette: {
     primary: {
-      main: '#FF6701',
+      main: '#d1453b',
       // oranzine spalva
       light: '#ffffff',
       // balta
-      dark: '#180A0A',
-      // juoda
-      contrastText: '#ffffff',
+    },
+    secondary: {
+      main: '#fdfdfd',
+    },
+    text: {
+      primary: '#180A0A',
     },
   },
 });
 
-export default themeColors;
+export default themeStyle;

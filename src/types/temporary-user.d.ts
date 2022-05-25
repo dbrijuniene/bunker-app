@@ -3,7 +3,6 @@ type TemporaryUser = {
   name: string,
   email: string,
   password: string,
-  surname: string
 };
 
 export default TemporaryUser;

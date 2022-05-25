@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import KeyIcon from '@mui/icons-material/Key';
 import { useAppDispatch, useRootSelector } from '../store/hooks';
 import { resetServerErrorMsg } from '../store/shared-slice';
 
@@ -37,7 +36,10 @@ const AuthForm: React.FC<AuthFormProps> = ({
   const dispatch = useAppDispatch();
 
   return (
-    <Container sx={{ position: 'relative', pt: 20 }}>
+    <Container sx={{
+      display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'column-reverse', pt: 5,
+    }}
+    >
       {serverErrorMsg && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Alert
@@ -67,7 +69,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         }}
         onSubmit={onSubmit}
       >
-        <KeyIcon color="primary" fontSize="large" sx={{ fontSize: 70 }} />
+        <img style={{ width: '150px', height: '100px' }} src="Bunker_logo.jpg" alt="bunker" />
         <Typography component="h5" variant="h5">{formTitle}</Typography>
 
         <Box sx={{
@@ -92,6 +94,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           <Button variant="text" type="reset" onClick={onReset}>{resetText}</Button>
         )}
       </Paper>
+      <img style={{ width: '650px', height: '250px' }} src="organize.webp" alt="organize" />
     </Container>
   );
 };

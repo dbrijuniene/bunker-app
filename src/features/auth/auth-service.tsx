@@ -21,7 +21,6 @@ namespace AuthService {
     return {
       id: tempUser.id,
       name: tempUser.name,
-      surname: tempUser.surname,
       email: tempUser.email,
     };
   };
@@ -29,7 +28,7 @@ namespace AuthService {
   export const register = async (userRegistrantion: UserRegistration): Promise<Crudentials> => {
     const { data: tempUsers } = await axios.get<TemporaryUser[]>('http://localhost:8000/users');
 
-    if (!(userRegistrantion.email && userRegistrantion.name && userRegistrantion.password && userRegistrantion.repeatPassword && userRegistrantion.surname)) {
+    if (!(userRegistrantion.email && userRegistrantion.name && userRegistrantion.password && userRegistrantion.repeatPassword)) {
       throw new Error('Missing data');
     }
     if (userRegistrantion.password !== userRegistrantion.repeatPassword) {
@@ -41,7 +40,6 @@ namespace AuthService {
       email: userRegistrantion.email,
       name: userRegistrantion.name,
       password: userRegistrantion.password,
-      surname: userRegistrantion.surname,
     };
 
     const { data: createdUser } = await axios.post<TemporaryUser>('http://localhost:8000/users', newUser);
