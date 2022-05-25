@@ -15,7 +15,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useRootSelector, useAppDispatch } from '../store/hooks';
 import { removeItem } from '../store/items-slice';
 
-const Items: React.FC = () => {
+const TablePlacedItems: React.FC = () => {
   const items = useRootSelector((state) => state.items);
   const dispatch = useAppDispatch();
 
@@ -67,4 +67,4 @@ const Items: React.FC = () => {
   );
 };
 
-export default Items;
+export default TablePlacedItems;

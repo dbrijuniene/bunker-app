@@ -9,7 +9,7 @@ import {
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddIcon from '@mui/icons-material/Add';
-import Items from '../components/items';
+import TablePlacedItems from '../components/table-placed-items';
 
 const PlaceName: React.FC = () => (
   <Box>
@@ -28,7 +28,7 @@ const Places: React.FC = () => (
       add place
     </Button>
     <PlaceName />
-    <Items />
+    <TablePlacedItems />
   </Container>
 );
 

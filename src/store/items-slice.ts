@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ItemsState } from '../types/index';
+import { PlacedItemsState } from '../types/index';
 import Status from '../types/status-enum';
 
-const initialState: ItemsState = [
+const initialState: PlacedItemsState = [
   {
     id: 1,
+    placeId: 2,
     name: 'Buckwheat',
     units: 'g',
     quantity: 500,
@@ -13,6 +14,7 @@ const initialState: ItemsState = [
   },
   {
     id: 2,
+    placeId: 2,
     name: 'Canned meat',
     units: 'pieces',
     quantity: 5,
@@ -21,6 +23,7 @@ const initialState: ItemsState = [
   },
   {
     id: 3,
+    placeId: 1,
     name: 'Water',
     units: 'l',
     quantity: 5,
@@ -34,7 +37,7 @@ export const itemsSlice = createSlice({
   initialState,
   reducers: {
     removeItem:
-      (state: ItemsState, action: PayloadAction<number>) => {
+      (state: PlacedItemsState, action: PayloadAction<number>) => {
         const index = state.map((item) => item.id).indexOf(action.payload);
         state.splice(index, 1);
       },
