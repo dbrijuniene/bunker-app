@@ -1,14 +1,10 @@
+import Status from './status-enum';
+
 export type Item = {
-  id: string,
+  id: number,
   name: string,
   units: string,
   quantity: number,
   status: Status,
   validUntil: string,
 };
-
-export enum Status {
-  Wish,
-  Packed,
-  Expired,
-}
