@@ -10,6 +10,8 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddIcon from '@mui/icons-material/Add';
 import TablePlacedItems from '../components/table-placed-items';
+import { useRootSelector } from '../store/hooks';
+import { Place as PlaceType } from '../types';
 
 const PlaceName: React.FC = () => (
   <Box>
@@ -19,8 +21,12 @@ const PlaceName: React.FC = () => (
   </Box>
 );
 
-const Places: React.FC = () => (
-  <Container sx={{ textAlign: 'center', marginTop: '30px' }}>
+type PlaceProps = {
+  place: PlaceType,
+};
+
+const Place: React.FC<PlaceProps> = ({ place }) => (
+  <Box>
     <Button sx={{ margin: '25px' }} variant="outlined">
       {' '}
       <AddIcon />
@@ -29,7 +35,19 @@ const Places: React.FC = () => (
     </Button>
     <PlaceName />
     <TablePlacedItems />
-  </Container>
+  </Box>
 );
+
+const Places: React.FC = () => {
+  const places = useRootSelector((state) => state.places);
+
+  return (
+    <Container sx={{ textAlign: 'center', marginTop: '30px' }}>
+      {places.map((place) => (
+        <Place place={place} />
+      ))}
+    </Container>
+  );
+};
 
 export default Places;
