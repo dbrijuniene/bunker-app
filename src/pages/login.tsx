@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
         .email('Invalid email adress')
         .required('Required'),
       password: Yup.string()
-        .required('Requider'),
+        .required('Required'),
     }),
 
     onSubmit: (values) => {

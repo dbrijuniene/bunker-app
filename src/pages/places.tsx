@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -28,6 +28,7 @@ type PlaceNameProps = {
 
 const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
   const dispatch = useAppDispatch();
+  const [edit, setEdit] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -40,6 +41,10 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
     onSubmit: (values, { resetForm }) => {
       dispatch(updatePlace({ id: place.id, newName: values.name }));
       resetForm({ values: { name: values.name } });
+      setEdit(false);
+    },
+    onReset: () => {
+      setEdit(false);
     },
   });
 
@@ -50,39 +55,45 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
       alignItems="center"
       spacing={1}
     >
-      {/* <Typography variant="h5">
-        {place.name}
-      </Typography>
-      <IconButton><EditRoundedIcon color="info" fontSize="small" /></IconButton>
-      <IconButton onClick={() => dispatch(removePlace(place.id))}><PlaylistRemoveIcon color="error" fontSize="medium" /></IconButton> */}
-      <Box
-        component="form"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          my: 2,
-        }}
-        onSubmit={formik.handleSubmit}
-        onReset={formik.handleReset}
-      >
-        <TextField
-          id="name"
-          label="Place name"
-          type="text"
-          variant="outlined"
-          fullWidth
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.name}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-
-        />
-        <Button type="submit" disabled={!(formik.isValid && formik.dirty)} variant="contained">Save</Button>
-        <Button type="reset" variant="text">Cancel</Button>
-      </Box>
-
+      {edit
+        ? (
+          <Box
+            component="form"
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              my: 2,
+            }}
+            onSubmit={formik.handleSubmit}
+            onReset={formik.handleReset}
+          >
+            <TextField
+              id="name"
+              label="Place name"
+              type="text"
+              variant="outlined"
+              fullWidth
+              focused
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name && formik.errors.name}
+            />
+            <Button type="submit" disabled={!(formik.isValid && formik.dirty)} variant="contained">Save</Button>
+            <Button type="reset" variant="text">Cancel</Button>
+          </Box>
+        )
+        : (
+          <>
+            <Typography variant="h5">
+              {place.name}
+            </Typography>
+            <IconButton onClick={() => { setEdit(true); }}><EditRoundedIcon color="info" fontSize="small" /></IconButton>
+            <IconButton onClick={() => dispatch(removePlace(place.id))}><PlaylistRemoveIcon color="error" fontSize="medium" /></IconButton>
+          </>
+        )}
     </Stack>
   );
 };
