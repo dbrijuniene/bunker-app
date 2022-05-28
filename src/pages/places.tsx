@@ -6,17 +6,16 @@ import {
   Container,
   Button,
   IconButton,
-  Input,
   Box,
   Typography,
   TextField,
   Stack,
-  Paper,
 } from '@mui/material';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
 import AddIcon from '@mui/icons-material/Add';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import ClearIcon from '@mui/icons-material/Clear';
+import CheckIcon from '@mui/icons-material/Check';
 import TablePlacedItems from '../components/table-placed-items';
 import { useRootSelector, useAppDispatch } from '../store/hooks';
 import { Place as PlaceType } from '../types';
@@ -63,7 +62,7 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              my: 2,
+              my: 1,
             }}
             onSubmit={formik.handleSubmit}
             onReset={formik.handleReset}
@@ -81,8 +80,21 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name && formik.errors.name}
             />
-            <Button type="submit" disabled={!(formik.isValid && formik.dirty)} variant="contained">Save</Button>
-            <Button type="reset" variant="text">Cancel</Button>
+            <Container>
+              <Button type="submit" disabled={!(formik.isValid && formik.dirty)} variant="contained">
+                {' '}
+                <CheckIcon fontSize="small" />
+                {' '}
+                Save
+              </Button>
+              <Button type="reset" variant="text">
+                {' '}
+                <ClearIcon fontSize="small" />
+                {' '}
+                Cancel
+              </Button>
+            </Container>
+
           </Box>
         )
         : (
@@ -106,7 +118,7 @@ const Place: React.FC<PlaceProps> = ({ place }) => (
   <Box>
     <Button sx={{ margin: '25px' }} variant="outlined">
       {' '}
-      <AddIcon />
+      <AddIcon fontSize="small" />
       {' '}
       add place
     </Button>
