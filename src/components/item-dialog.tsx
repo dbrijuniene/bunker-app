@@ -1,5 +1,5 @@
 /* eslint-disable no-debugger */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box, Button, TextField,
 } from '@mui/material';
@@ -10,10 +10,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import MenuItem from '@mui/material/MenuItem';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useAppDispatch } from '../store/hooks';
 import { addItem } from '../store/items-slice';
 import Status from '../types/status-enum';
-import StatusFormControl from './status-form-control';
 
 type ItemDialogProps = {
   open: boolean,
@@ -29,7 +29,7 @@ const ItemDialog: React.FC<ItemDialogProps> = ({ open, handleClose }) => {
       units: '',
       quantity: '',
       status: '',
-      validUntil: '',
+      validUntil: null,
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -41,7 +41,9 @@ const ItemDialog: React.FC<ItemDialogProps> = ({ open, handleClose }) => {
         .required('Required'),
       status: Yup.string()
         .required('Required'),
-      validUntil: Yup.string()
+      validUntil: Yup.date()
+        .transform((v) => (v instanceof Date && !Number.isNaN(v) ? v : null))
+        .nullable()
         .required('Required'),
     }),
     onSubmit: (values, { resetForm }) => {
@@ -114,18 +116,24 @@ const ItemDialog: React.FC<ItemDialogProps> = ({ open, handleClose }) => {
             <MenuItem value={Status.Wish}>Wish</MenuItem>
             <MenuItem value={Status.Packed}>Packed</MenuItem>
           </TextField>
-          <TextField
-            margin="dense"
-            id="validUntil"
-            label="Valid until"
-            type="text"
-            fullWidth
-            variant="outlined"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+          <DatePicker
+            onChange={(value) => formik.setFieldValue('validUntil', value, true)}
             value={formik.values.validUntil}
-            error={formik.touched.validUntil && Boolean(formik.errors.validUntil)}
-            helperText={formik.touched.validUntil && formik.errors.validUntil}
+            label="Valid until"
+            renderInput={(params) => (
+              <TextField
+                margin="dense"
+                id="validUntil"
+                type="date"
+                fullWidth
+                variant="outlined"
+                onBlur={formik.handleBlur}
+                helperText={formik.touched.validUntil && formik.errors.validUntil}
+                {...params}
+                error={formik.touched.validUntil && Boolean(formik.errors.validUntil)}
+              />
+              //   https://stackoverflow.com/questions/70634443/using-the-mui-datepicker-with-yup-and-react-hook-form-the-error-prop-doesnt-w //
+            )}
           />
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'center', pb: '25px' }}>
