@@ -28,6 +28,9 @@ type PlaceNameProps = {
 
 const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
   const dispatch = useAppDispatch();
+
+  const placesLength = useRootSelector((state) => state.places.length);
+
   const [edit, setEdit] = useState(false);
 
   const formik = useFormik({
@@ -109,7 +112,12 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
               {place.name}
             </Typography>
             <IconButton onClick={() => { setEdit(true); }}><EditRoundedIcon color="info" fontSize="small" /></IconButton>
-            <IconButton onClick={handleDeleteClick}><PlaylistRemoveIcon color="error" fontSize="medium" /></IconButton>
+            {placesLength !== 1
+            && (
+            <IconButton onClick={handleDeleteClick}>
+              <PlaylistRemoveIcon color="error" fontSize="medium" />
+            </IconButton>
+            )}
           </>
         )}
     </Stack>
