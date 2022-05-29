@@ -5,7 +5,6 @@ import {
 import LogoutIcon from '@mui/icons-material/Logout';
 import { NavLink } from 'react-router-dom';
 import AuthContext from '../features/auth/auth-context';
-import themeColors from '../styles/theme';
 
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
   display: 'inline-flex',
@@ -41,7 +40,7 @@ const Navbar: React.FC = () => {
         <Toolbar>
           <img style={{ width: '150px', height: '100px' }} src="Bunker_logo.jpg" alt="bunker" />
           <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
-          <StyledNavLink to="/add-new-items">Add new items</StyledNavLink>
+          <StyledNavLink to="/items">Items</StyledNavLink>
           <StyledNavLink to="/places">Places</StyledNavLink>
           <Box sx={{ flexGrow: 2 }} />
           <Typography sx={{ margin: '0 16px' }} color="text.primary">{helloText}</Typography>

@@ -20,6 +20,7 @@ import { useRootSelector, useAppDispatch } from '../store/hooks';
 import { Place as PlaceType } from '../types';
 import { removePlace, updatePlace } from '../store/places-slice';
 import AddPlaceDialog from '../components/add-place-dialog';
+import { removeItemsByPlaceId } from '../store/items-slice';
 
 type PlaceNameProps = {
   place: PlaceType,
@@ -46,6 +47,11 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
       setEdit(false);
     },
   });
+
+  const handleDeleteClick = () => {
+    dispatch(removePlace(place.id));
+    dispatch(removeItemsByPlaceId(place.id));
+  };
 
   return (
     <Stack
@@ -103,7 +109,7 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
               {place.name}
             </Typography>
             <IconButton onClick={() => { setEdit(true); }}><EditRoundedIcon color="info" fontSize="small" /></IconButton>
-            <IconButton onClick={() => dispatch(removePlace(place.id))}><PlaylistRemoveIcon color="error" fontSize="medium" /></IconButton>
+            <IconButton onClick={handleDeleteClick}><PlaylistRemoveIcon color="error" fontSize="medium" /></IconButton>
           </>
         )}
     </Stack>

@@ -41,6 +41,8 @@ export const itemsSlice = createSlice({
         const index = state.map((item) => item.id).indexOf(action.payload);
         state.splice(index, 1);
       },
+    removeItemsByPlaceId:
+      (state: PlacedItemsState, action: PayloadAction<number>) => state.filter((s) => s.placeId !== action.payload),
     addItem:
       (state: PlacedItemsState, action: PayloadAction<NewPlacedItem>) => {
         state.push({ id: state[state.length - 1].id + 1, ...action.payload });
@@ -53,6 +55,8 @@ export const itemsSlice = createSlice({
   },
 });
 
-export const { removeItem, addItem, editItem } = itemsSlice.actions;
+export const {
+  removeItem, addItem, editItem, removeItemsByPlaceId,
+} = itemsSlice.actions;
 
 export default itemsSlice.reducer;
