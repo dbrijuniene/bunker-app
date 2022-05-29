@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableFooter from '@mui/material/TableFooter';
 import TableRow from '@mui/material/TableRow';
 import { Button, IconButton, Paper } from '@mui/material';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
+// import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddIcon from '@mui/icons-material/Add';
 import { format } from 'date-fns';
@@ -16,13 +15,21 @@ import { useRootSelector, useAppDispatch } from '../store/hooks';
 import { removeItem } from '../store/items-slice';
 import ItemDialog from './item-dialog';
 
-const TablePlacedItems: React.FC = () => {
-  const items = useRootSelector((state) => state.items);
+type TablePlacedItemsProps = {
+  placeId?: number
+};
+
+const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
+  const items = useRootSelector((state) => state.items.filter((i) => (placeId ? i.placeId === placeId : true)));
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
   };
 
   return (
@@ -35,11 +42,11 @@ const TablePlacedItems: React.FC = () => {
             <TableCell align="center">Unit</TableCell>
             <TableCell align="right">Status</TableCell>
             <TableCell align="right">Valid until</TableCell>
-            <TableCell />
+            {placeId && (<TableCell />)}
           </TableRow>
         </TableHead>
         <TableBody>
-          {items.map((row, i) => (
+          {items.map((row) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th, &:nth-last-child(odd)': { border: -1, bgcolor: 'secondary.main' } }}
@@ -49,27 +56,33 @@ const TablePlacedItems: React.FC = () => {
               <TableCell align="center">{row.units}</TableCell>
               <TableCell align="right">{row.status}</TableCell>
               <TableCell align="right">{format(row.validUntil, 'PPP')}</TableCell>
-              <TableCell align="right">
-                <IconButton><EditRoundedIcon color="info" /></IconButton>
-                <IconButton onClick={() => dispatch(removeItem(row.id))}><DeleteForeverIcon color="error" /></IconButton>
-              </TableCell>
+              {placeId
+                && (
+                  <TableCell align="right">
+                    {/* <IconButton onClick={handleOpen}><EditRoundedIcon color="info" /></IconButton> */}
+                    <IconButton onClick={() => dispatch(removeItem(row.id))}><DeleteForeverIcon color="error" /></IconButton>
+                  </TableCell>
+                )}
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={6} align="center">
-              <Button onClick={() => { setOpen(true); }} variant="outlined">
-                {' '}
-                <AddIcon fontSize="small" />
-                {' '}
-                add Item
-              </Button>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
+        {placeId
+          && (
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={6} align="center">
+                  <Button onClick={handleOpen} variant="outlined">
+                    {' '}
+                    <AddIcon fontSize="small" />
+                    {' '}
+                    add Item
+                  </Button>
+                  <ItemDialog open={open} handleClose={handleClose} placeId={placeId} />
+                </TableCell>
+              </TableRow>
+            </TableFooter>
+          )}
       </Table>
-      <ItemDialog open={open} handleClose={handleClose} />
     </TableContainer>
   );
 };

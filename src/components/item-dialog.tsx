@@ -1,5 +1,4 @@
-/* eslint-disable no-debugger */
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box, Button, TextField,
 } from '@mui/material';
@@ -14,13 +13,17 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useAppDispatch } from '../store/hooks';
 import { addItem } from '../store/items-slice';
 import Status from '../types/status-enum';
+import { NewPlacedItem } from '../types/new-placed-item';
 
 type ItemDialogProps = {
   open: boolean,
   handleClose: () => void
+  placeId: number
 };
 
-const ItemDialog: React.FC<ItemDialogProps> = ({ open, handleClose }) => {
+const ItemDialog: React.FC<ItemDialogProps> = ({
+  open, handleClose, placeId,
+}) => {
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -30,6 +33,7 @@ const ItemDialog: React.FC<ItemDialogProps> = ({ open, handleClose }) => {
       quantity: '',
       status: '',
       validUntil: null,
+      placeId,
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -47,7 +51,15 @@ const ItemDialog: React.FC<ItemDialogProps> = ({ open, handleClose }) => {
         .required('Required'),
     }),
     onSubmit: (values, { resetForm }) => {
-      dispatch(addItem(values));
+      const newItem: NewPlacedItem = {
+        name: values.name,
+        placeId,
+        quantity: values.quantity as unknown as number,
+        status: values.status as unknown as Status,
+        units: values.units,
+        validUntil: values.validUntil as unknown as Date,
+      };
+      dispatch(addItem(newItem));
       resetForm();
       handleClose();
     },
