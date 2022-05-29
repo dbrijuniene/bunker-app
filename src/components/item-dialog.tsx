@@ -130,9 +130,9 @@ const ItemDialog: React.FC<ItemDialogProps> = ({ open, handleClose }) => {
                 onBlur={formik.handleBlur}
                 helperText={formik.touched.validUntil && formik.errors.validUntil}
                 {...params}
+                //   https://stackoverflow.com/questions/70634443/using-the-mui-datepicker-with-yup-and-react-hook-form-the-error-prop-doesnt-w //
                 error={formik.touched.validUntil && Boolean(formik.errors.validUntil)}
               />
-              //   https://stackoverflow.com/questions/70634443/using-the-mui-datepicker-with-yup-and-react-hook-form-the-error-prop-doesnt-w //
             )}
           />
         </DialogContent>

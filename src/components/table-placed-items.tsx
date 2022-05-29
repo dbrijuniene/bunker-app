@@ -11,6 +11,7 @@ import { Button, IconButton, Paper } from '@mui/material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import AddIcon from '@mui/icons-material/Add';
+import { format } from 'date-fns';
 import { useRootSelector, useAppDispatch } from '../store/hooks';
 import { removeItem } from '../store/items-slice';
 import ItemDialog from './item-dialog';
@@ -47,7 +48,7 @@ const TablePlacedItems: React.FC = () => {
               <TableCell align="right">{row.quantity}</TableCell>
               <TableCell align="center">{row.units}</TableCell>
               <TableCell align="right">{row.status}</TableCell>
-              <TableCell align="right">{row.validUntil}</TableCell>
+              <TableCell align="right">{format(row.validUntil, 'PPP')}</TableCell>
               <TableCell align="right">
                 <IconButton><EditRoundedIcon color="info" /></IconButton>
                 <IconButton onClick={() => dispatch(removeItem(row.id))}><DeleteForeverIcon color="error" /></IconButton>
