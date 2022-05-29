@@ -21,6 +21,7 @@ import { Place as PlaceType } from '../types';
 import { removePlace, updatePlace } from '../store/places-slice';
 import AddPlaceDialog from '../components/add-place-dialog';
 import { removeItemsByPlaceId } from '../store/items-slice';
+import SharedContainer from '../components/shared-container';
 
 type PlaceNameProps = {
   place: PlaceType,
@@ -154,11 +155,11 @@ const Places: React.FC = () => {
   const places = useRootSelector((state) => state.places);
 
   return (
-    <Container sx={{ textAlign: 'center', marginTop: '30px' }}>
+    <SharedContainer>
       {places.map((place) => (
         <Place key={place.id} place={place} />
       ))}
-    </Container>
+    </SharedContainer>
   );
 };
 
