@@ -13,16 +13,12 @@ const RegisterPage: React.FC = () => {
   const formik = useFormik({
     initialValues: {
       name: '',
-      surname: '',
       email: '',
       password: '',
       repeatPassword: '',
     },
     validationSchema: Yup.object({
       name: Yup.string()
-        .min(2, 'Must be at least 2 characters')
-        .required('Required'),
-      surname: Yup.string()
         .min(2, 'Must be at least 2 characters')
         .required('Required'),
       email: Yup.string()
@@ -40,7 +36,6 @@ const RegisterPage: React.FC = () => {
     onSubmit: (values) => {
       const userRegistration: UserRegistration = {
         name: values.name,
-        surname: values.surname,
         email: values.email,
         password: values.password,
         repeatPassword: values.repeatPassword,
@@ -72,18 +67,6 @@ const RegisterPage: React.FC = () => {
         value={formik.values.name}
         error={formik.touched.name && Boolean(formik.errors.name)}
         helperText={formik.touched.name && formik.errors.name}
-      />
-      <TextField
-        id="surname"
-        name="surname"
-        type="text"
-        label="Surname"
-        fullWidth
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.surname}
-        error={formik.touched.surname && Boolean(formik.errors.surname)}
-        helperText={formik.touched.surname && formik.errors.surname}
       />
       <TextField
         id="email"

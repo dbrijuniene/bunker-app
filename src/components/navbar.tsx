@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import {
-  AppBar, Toolbar, Container, styled, Button, Typography, Box,
+  AppBar, Toolbar, Container, styled, Typography, Box,
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { NavLink } from 'react-router-dom';
@@ -10,7 +10,7 @@ import themeColors from '../styles/theme';
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
   display: 'inline-flex',
   alignItems: 'center',
-  color: theme.palette.primary.dark,
+  color: theme.palette.text.primary,
   textDecoration: 'none',
   alignSelf: 'stretch',
   padding: theme.spacing(0, 2),
@@ -18,6 +18,8 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 
   '&.active': {
     boxShadow: `inset 0 -4px 0 0 ${theme.palette.primary.main}`,
+    fontWeight: 'bold',
+    color: theme.palette.primary.main,
   },
 
   ':hover': {
@@ -28,7 +30,7 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 const Navbar: React.FC = () => {
   const { logout, user } = useContext(AuthContext);
 
-  const helloText = `Hello, ${user?.name} ${user?.surname}`;
+  const helloText = `Hello, ${user?.name}`;
   const handleClick = () => {
     logout();
   };
@@ -40,12 +42,9 @@ const Navbar: React.FC = () => {
           <img style={{ width: '150px', height: '100px' }} src="Bunker_logo.jpg" alt="bunker" />
           <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
           <StyledNavLink to="/add-new-items">Add new items</StyledNavLink>
-          <StyledNavLink to="/settings">Settings</StyledNavLink>
+          <StyledNavLink to="/places">Places</StyledNavLink>
           <Box sx={{ flexGrow: 2 }} />
-          <Typography sx={{ margin: '0 16px' }} color="black">{helloText}</Typography>
-          {/* <Button variant="contained" onClick={handleClick}>
-            Log out
-          </Button> */}
+          <Typography sx={{ margin: '0 16px' }} color="text.primary">{helloText}</Typography>
           <LogoutIcon color="primary" fontSize="medium" sx={{ fontSize: 35, cursor: 'pointer' }} onClick={handleClick} />
         </Toolbar>
       </Container>

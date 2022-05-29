@@ -1,8 +1,8 @@
 import React from 'react';
-import Items from '../components/items';
+import TablePlacedItems from '../components/table-placed-items';
 
 const Dashboard: React.FC = () => (
-  <Items />
+  <TablePlacedItems />
 );
 
 export default Dashboard;
