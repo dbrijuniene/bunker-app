@@ -1,6 +1,5 @@
-/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Place, PlacesState } from '../types/index';
+import { PlacesState, PlaceUpdate } from '../types/index';
 
 const initialState: PlacesState = [
   {
@@ -23,13 +22,17 @@ export const placesSlice = createSlice({
         state.splice(index, 1);
       },
     updatePlace:
-      (state: PlacesState, action: PayloadAction<any>) => {
+      (state: PlacesState, action: PayloadAction<PlaceUpdate>) => {
         const index = state.map((place) => place.id).indexOf(action.payload.id);
         state[index].name = action.payload.newName;
+      },
+    addPlace:
+      (state: PlacesState, action: PayloadAction<string>) => {
+        state.push({ id: state[state.length - 1].id + 1, name: action.payload });
       },
   },
 });
 
-export const { removePlace, updatePlace } = placesSlice.actions;
+export const { removePlace, updatePlace, addPlace } = placesSlice.actions;
 
 export default placesSlice.reducer;

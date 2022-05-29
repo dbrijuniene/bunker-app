@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -20,6 +19,7 @@ import TablePlacedItems from '../components/table-placed-items';
 import { useRootSelector, useAppDispatch } from '../store/hooks';
 import { Place as PlaceType } from '../types';
 import { removePlace, updatePlace } from '../store/places-slice';
+import AddPlaceDialog from '../components/add-place-dialog';
 
 type PlaceNameProps = {
   place: PlaceType,
@@ -114,18 +114,27 @@ type PlaceProps = {
   place: PlaceType,
 };
 
-const Place: React.FC<PlaceProps> = ({ place }) => (
-  <Box>
-    <Button sx={{ margin: '25px' }} variant="outlined">
-      {' '}
-      <AddIcon fontSize="small" />
-      {' '}
-      add place
-    </Button>
-    <PlaceName place={place} />
-    <TablePlacedItems placeId={place.id} />
-  </Box>
-);
+const Place: React.FC<PlaceProps> = ({ place }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Box>
+      <AddPlaceDialog open={open} handleClose={handleClose} />
+      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="outlined">
+        {' '}
+        <AddIcon fontSize="small" />
+        {' '}
+        add place
+      </Button>
+      <PlaceName place={place} />
+      <TablePlacedItems placeId={place.id} />
+    </Box>
+  );
+};
 
 const Places: React.FC = () => {
   const places = useRootSelector((state) => state.places);

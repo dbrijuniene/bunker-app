@@ -1,3 +1,4 @@
+export { PlaceUpdate } from './place-update';
 export { NewPlacedItem } from './new-placed-item';
 export { default as Crudentials } from './crudentials';
 export { default as TemporaryUser } from './temporary-user';
