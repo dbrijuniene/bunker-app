@@ -39,5 +39,7 @@ module.exports = {
     }],
     'no-restricted-exports': [0],
     'react/require-default-props': [0],
+    //https://redux-toolkit.js.org/usage/immer-reducers
+    'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['state'] }] 
   },
 };

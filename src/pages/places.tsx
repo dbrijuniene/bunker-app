@@ -123,7 +123,7 @@ const Place: React.FC<PlaceProps> = ({ place }) => (
       add place
     </Button>
     <PlaceName place={place} />
-    <TablePlacedItems />
+    <TablePlacedItems placeId={place.id} />
   </Box>
 );
 

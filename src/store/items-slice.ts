@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PlacedItemsState } from '../types/index';
+import { PlacedItemsState, PlacedItem, NewPlacedItem } from '../types/index';
 import Status from '../types/status-enum';
 
 const initialState: PlacedItemsState = [
@@ -10,7 +10,7 @@ const initialState: PlacedItemsState = [
     units: 'g',
     quantity: 500,
     status: Status.Packed,
-    validUntil: '2022-12-25',
+    validUntil: new Date(2022, 12, 25),
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const initialState: PlacedItemsState = [
     units: 'pieces',
     quantity: 5,
     status: Status.Wish,
-    validUntil: '2022-12-18',
+    validUntil: new Date(2022, 12, 18),
   },
   {
     id: 3,
@@ -27,8 +27,8 @@ const initialState: PlacedItemsState = [
     name: 'Water',
     units: 'l',
     quantity: 5,
-    status: Status.Expired,
-    validUntil: '2022-04-14',
+    status: Status.Wish,
+    validUntil: new Date(2022, 4, 14),
   },
 ];
 
@@ -42,12 +42,17 @@ export const itemsSlice = createSlice({
         state.splice(index, 1);
       },
     addItem:
-      (state: PlacedItemsState, action: PayloadAction<any>) => {
+      (state: PlacedItemsState, action: PayloadAction<NewPlacedItem>) => {
         state.push({ id: state[state.length - 1].id + 1, ...action.payload });
+      },
+    editItem:
+      (state: PlacedItemsState, action: PayloadAction<PlacedItem>) => {
+        const index = state.map((item) => item.id).indexOf(action.payload.id);
+        state[index] = { ...action.payload };
       },
   },
 });
 
-export const { removeItem, addItem } = itemsSlice.actions;
+export const { removeItem, addItem, editItem } = itemsSlice.actions;
 
 export default itemsSlice.reducer;

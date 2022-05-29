@@ -1,3 +1,3 @@
-import { PlacedItems } from './placed-item';
+import { PlacedItem } from './placed-item';
 
-export type PlacedItemsState = PlacedItems[];
+export type PlacedItemsState = PlacedItem[];
