@@ -30,6 +30,15 @@ const initialState: PlacedItemsState = [
     status: Status.Wish,
     validUntil: new Date(2022, 4, 14),
   },
+  {
+    id: 4,
+    placeId: 1,
+    name: 'Watermelon',
+    units: 'pieces',
+    quantity: 1,
+    status: Status.Packed,
+    validUntil: new Date(2022, 1, 1),
+  },
 ];
 
 export const itemsSlice = createSlice({
