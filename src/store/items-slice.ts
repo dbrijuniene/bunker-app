@@ -27,7 +27,7 @@ const initialState: PlacedItemsState = [
     name: 'Water',
     units: 'l',
     quantity: 5,
-    status: Status.Expired,
+    status: Status.Wish,
     validUntil: '2022-04-14',
   },
 ];
