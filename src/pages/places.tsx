@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -20,6 +19,9 @@ import TablePlacedItems from '../components/table-placed-items';
 import { useRootSelector, useAppDispatch } from '../store/hooks';
 import { Place as PlaceType } from '../types';
 import { removePlace, updatePlace } from '../store/places-slice';
+import AddPlaceDialog from '../components/add-place-dialog';
+import { removeItemsByPlaceId } from '../store/items-slice';
+import SharedContainer from '../components/shared-container';
 
 type PlaceNameProps = {
   place: PlaceType,
@@ -27,6 +29,9 @@ type PlaceNameProps = {
 
 const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
   const dispatch = useAppDispatch();
+
+  const placesLength = useRootSelector((state) => state.places.length);
+
   const [edit, setEdit] = useState(false);
 
   const formik = useFormik({
@@ -46,6 +51,11 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
       setEdit(false);
     },
   });
+
+  const handleDeleteClick = () => {
+    dispatch(removePlace(place.id));
+    dispatch(removeItemsByPlaceId(place.id));
+  };
 
   return (
     <Stack
@@ -103,7 +113,12 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
               {place.name}
             </Typography>
             <IconButton onClick={() => { setEdit(true); }}><EditRoundedIcon color="info" fontSize="small" /></IconButton>
-            <IconButton onClick={() => dispatch(removePlace(place.id))}><PlaylistRemoveIcon color="error" fontSize="medium" /></IconButton>
+            {placesLength !== 1
+            && (
+            <IconButton onClick={handleDeleteClick}>
+              <PlaylistRemoveIcon color="error" fontSize="medium" />
+            </IconButton>
+            )}
           </>
         )}
     </Stack>
@@ -114,28 +129,37 @@ type PlaceProps = {
   place: PlaceType,
 };
 
-const Place: React.FC<PlaceProps> = ({ place }) => (
-  <Box>
-    <Button sx={{ margin: '25px' }} variant="outlined">
-      {' '}
-      <AddIcon fontSize="small" />
-      {' '}
-      add place
-    </Button>
-    <PlaceName place={place} />
-    <TablePlacedItems placeId={place.id} />
-  </Box>
-);
+const Place: React.FC<PlaceProps> = ({ place }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <Box>
+      <AddPlaceDialog open={open} handleClose={handleClose} />
+      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="outlined">
+        {' '}
+        <AddIcon fontSize="small" />
+        {' '}
+        add place
+      </Button>
+      <PlaceName place={place} />
+      <TablePlacedItems placeId={place.id} />
+    </Box>
+  );
+};
 
 const Places: React.FC = () => {
   const places = useRootSelector((state) => state.places);
 
   return (
-    <Container sx={{ textAlign: 'center', marginTop: '30px' }}>
+    <SharedContainer>
       {places.map((place) => (
         <Place key={place.id} place={place} />
       ))}
-    </Container>
+    </SharedContainer>
   );
 };
 

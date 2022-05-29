@@ -40,21 +40,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
       display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', flexDirection: 'column-reverse', pt: 5,
     }}
     >
-      {serverErrorMsg && (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Alert
-            sx={{
-              position: 'absolute',
-              top: 0,
-              minWidth: contentWidth,
-              mt: 12,
-            }}
-            onClose={() => dispatch(resetServerErrorMsg())}
-          >
-            {serverErrorMsg}
-          </Alert>
-        </Box>
-      )}
       <Paper
         component="form"
         elevation={3}
@@ -71,7 +56,19 @@ const AuthForm: React.FC<AuthFormProps> = ({
       >
         <img style={{ width: '150px', height: '100px' }} src="Bunker_logo.jpg" alt="bunker" />
         <Typography component="h5" variant="h5">{formTitle}</Typography>
-
+        {serverErrorMsg && (
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Alert
+              sx={{
+                minWidth: contentWidth - 48,
+              }}
+              onClose={() => dispatch(resetServerErrorMsg())}
+              severity="error"
+            >
+              {serverErrorMsg}
+            </Alert>
+          </Box>
+        )}
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',

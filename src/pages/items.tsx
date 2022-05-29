@@ -1,11 +1,11 @@
 import React from 'react';
-import TablePlacedItems from '../components/table-placed-items';
 import SharedContainer from '../components/shared-container';
+import TablePlacedItems from '../components/table-placed-items';
 
-const Dashboard: React.FC = () => (
+const Items: React.FC = () => (
   <SharedContainer>
     <TablePlacedItems />
   </SharedContainer>
 );
 
-export default Dashboard;
+export default Items;
