@@ -1,36 +1,41 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import AuthForm from '../components/auth-form';
-import AuthContext from '../features/auth/auth-context';
 import { Crudentials } from '../types';
+import { useAppDispatch } from '../store/hooks';
+import { login, setServerErrorMsg } from '../store/shared-slice';
 
 const LoginPage: React.FC = () => {
+  const usedEmail = localStorage.getItem('login');
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      email: usedEmail || '',
       password: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email('Invalid email adress')
-        .required('Required'),
-      password: Yup.string()
-        .required('Required'),
+      email: Yup.string().email('Invalid email adress').required('Required'),
+      password: Yup.string().required('Required'),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const crudential: Crudentials = {
         email: values.email,
         password: values.password,
       };
 
-      login(crudential, '/dashboard');
+      try {
+        await dispatch(login(crudential)).unwrap();
+        localStorage.setItem('login', values.email);
+        navigate('/dashboard');
+      } catch (error) {
+        dispatch(setServerErrorMsg(error as unknown as string));
+      }
     },
 
     onReset: () => navigate('/registration'),

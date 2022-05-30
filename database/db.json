@@ -3,14 +3,12 @@
     {
       "id": 0,
       "name": "Rasa",
-      "surname": "Vilkas",
-      "email": "vilkas@gmail.com",
-      "password": "12345"
+      "email": "test@test.com",
+      "password": "1234"
     },
     {
       "id": 1,
       "name": "a",
-      "surname": "a",
       "email": "a@a.a",
       "password": "a"
     }

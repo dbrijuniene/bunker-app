@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { TextField } from '@mui/material';
 import AuthForm from '../components/auth-form';
-import AuthContext from '../features/auth/auth-context';
 import { UserRegistration } from '../types';
+import { useAppDispatch } from '../store/hooks';
+import { register, setServerErrorMsg } from '../store/shared-slice';
 
 const RegisterPage: React.FC = () => {
-  const { register } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -21,9 +22,7 @@ const RegisterPage: React.FC = () => {
       name: Yup.string()
         .min(2, 'Must be at least 2 characters')
         .required('Required'),
-      email: Yup.string()
-        .email('Invalid email adress')
-        .required('Required'),
+      email: Yup.string().email('Invalid email adress').required('Required'),
       password: Yup.string()
         .min(8, 'Must be at least 8 characters')
         .required('Requider'),
@@ -32,8 +31,7 @@ const RegisterPage: React.FC = () => {
         .required('Requider')
         .oneOf([Yup.ref('password'), null], 'Passwords must match'),
     }),
-
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const userRegistration: UserRegistration = {
         name: values.name,
         email: values.email,
@@ -41,9 +39,13 @@ const RegisterPage: React.FC = () => {
         repeatPassword: values.repeatPassword,
       };
 
-      register(userRegistration);
+      try {
+        await dispatch(register(userRegistration)).unwrap();
+        navigate('/dashboard');
+      } catch (error) {
+        dispatch(setServerErrorMsg(error as unknown as string));
+      }
     },
-
     onReset: () => navigate('/'),
   });
 
@@ -101,8 +103,12 @@ const RegisterPage: React.FC = () => {
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={formik.values.repeatPassword}
-        error={formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword)}
-        helperText={formik.errors.repeatPassword && formik.errors.repeatPassword}
+        error={
+          formik.touched.repeatPassword && Boolean(formik.errors.repeatPassword)
+        }
+        helperText={
+          formik.errors.repeatPassword && formik.errors.repeatPassword
+        }
       />
     </AuthForm>
   );
