@@ -7,5 +7,5 @@ export type PlacedItem = {
   quantity: number,
   units: string,
   status: Status,
-  validUntil: Date,
+  validUntil: string,
 };

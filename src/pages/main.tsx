@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import AuthContext from '../features/auth/auth-context';
 import Navbar from '../components/navbar';
+import { useRootSelector } from '../store/hooks';
 
 const Main: React.FC = () => {
-  const { loggedIn } = useContext(AuthContext);
+  const user = useRootSelector((state) => state.shared.user);
   return (
     <>
-      {loggedIn && <Navbar />}
+      {user && <Navbar />}
       <Box component="main">
         <Outlet />
       </Box>

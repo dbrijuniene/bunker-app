@@ -1,10 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
-  AppBar, Toolbar, Container, styled, Typography, Box,
+  AppBar,
+  Toolbar,
+  Container,
+  styled,
+  Typography,
+  Box,
 } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { NavLink } from 'react-router-dom';
-import AuthContext from '../features/auth/auth-context';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useRootSelector } from '../store/hooks';
+import { setUser } from '../store/shared-slice';
 
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
   display: 'inline-flex',
@@ -27,24 +33,38 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 }));
 
 const Navbar: React.FC = () => {
-  const { logout, user } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const user = useRootSelector((state) => state.shared.user);
 
   const helloText = `Hello, ${user?.name}`;
   const handleClick = () => {
-    logout();
+    dispatch(setUser(undefined));
+    navigate('/');
   };
 
   return (
     <AppBar position="static" sx={{ bgcolor: 'primary.light' }}>
       <Container sx={{ px: { xs: 0, sm: 0 } }}>
         <Toolbar>
-          <img style={{ width: '150px', height: '100px' }} src="Bunker_logo.jpg" alt="bunker" />
+          <img
+            style={{ width: '150px', height: '100px' }}
+            src="Bunker_logo.jpg"
+            alt="bunker"
+          />
           <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
-          <StyledNavLink to="/items">Items</StyledNavLink>
+          {/* <StyledNavLink to="/items">Items</StyledNavLink> */}
           <StyledNavLink to="/places">Places</StyledNavLink>
           <Box sx={{ flexGrow: 2 }} />
-          <Typography sx={{ margin: '0 16px' }} color="text.primary">{helloText}</Typography>
-          <LogoutIcon color="primary" fontSize="medium" sx={{ fontSize: 35, cursor: 'pointer' }} onClick={handleClick} />
+          <Typography sx={{ margin: '0 16px' }} color="text.primary">
+            {helloText}
+          </Typography>
+          <LogoutIcon
+            color="primary"
+            fontSize="medium"
+            sx={{ fontSize: 35, cursor: 'pointer' }}
+            onClick={handleClick}
+          />
         </Toolbar>
       </Container>
     </AppBar>

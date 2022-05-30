@@ -1,5 +1,4 @@
-export type Place = {
-  id: number,
+export type NewPlace = {
   userId: number,
   name: string,
 };

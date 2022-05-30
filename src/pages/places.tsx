@@ -152,7 +152,8 @@ const Place: React.FC<PlaceProps> = ({ place }) => {
 };
 
 const Places: React.FC = () => {
-  const places = useRootSelector((state) => state.places);
+  const user = useRootSelector((state) => state.shared.user);
+  const places = useRootSelector((state) => state.places.filter((p) => p.userId === user?.id as number));
 
   return (
     <SharedContainer>
