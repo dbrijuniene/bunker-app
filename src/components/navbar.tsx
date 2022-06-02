@@ -23,7 +23,7 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 
   '&.active': {
     boxShadow: `inset 0 -4px 0 0 ${theme.palette.primary.main}`,
-    fontWeight: 'bold',
+    fontWeight: 700,
     color: theme.palette.primary.main,
   },
 

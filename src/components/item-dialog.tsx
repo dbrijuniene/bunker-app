@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Button, TextField,
+  Box, Button, Stack, TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -70,8 +70,16 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle sx={{ textAlign: 'center' }}>New item</DialogTitle>
       <Box component="form" onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
+        <Stack
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          pt="15px"
+        >
+          <img style={{ width: '170px', height: '150px' }} src="shoping.webp" alt="shoping" />
+          <DialogTitle sx={{ textAlign: 'center', fontSize: '1.8rem' }}>New item</DialogTitle>
+        </Stack>
         <DialogContent>
           <TextField
             margin="dense"

@@ -82,7 +82,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         <LoadingButton
           loading={loading}
           disabled={disabled}
-          variant="outlined"
+          variant="contained"
           type="submit"
         >
           {submitText}
