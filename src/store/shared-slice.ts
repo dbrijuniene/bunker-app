@@ -23,12 +23,17 @@ export const register = createAsyncThunk('shared/register', async (newUser: User
   }
 });
 
-const initialState: SharedState = {
-  loading: false,
-  serverErrorMsg: undefined,
-  user: undefined,
-};
+const initialState = (): SharedState => {
+  const sessionUserId = sessionStorage.getItem('id') as unknown as number;
+  const sessionUserName = sessionStorage.getItem('name');
+  const user = sessionUserId && sessionUserName ? { id: sessionUserId, name: sessionUserName } : undefined;
 
+  return {
+    loading: false,
+    serverErrorMsg: undefined,
+    user,
+  };
+};
 export const sharedSlice = createSlice({
   name: 'shared',
   initialState,
@@ -49,6 +54,7 @@ export const sharedSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
       state.loading = true;
+      sessionStorage.clear();
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
@@ -65,6 +71,8 @@ export const sharedSlice = createSlice({
       } else {
         state.serverErrorMsg = 'No such user';
       }
+      sessionStorage.setItem('id', action.payload[0].id as unknown as string);
+      sessionStorage.setItem('name', action.payload[0].name);
     });
     builder.addCase(register.pending, (state) => {
       state.loading = true;
@@ -76,6 +84,8 @@ export const sharedSlice = createSlice({
     builder.addCase(register.fulfilled, (state, action) => {
       state.loading = false;
       state.user = { id: action.payload.id, name: action.payload.name };
+      sessionStorage.setItem('id', action.payload.id as unknown as string);
+      sessionStorage.setItem('name', action.payload.name);
     });
   },
 });

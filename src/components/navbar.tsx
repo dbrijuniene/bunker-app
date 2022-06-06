@@ -40,6 +40,7 @@ const Navbar: React.FC = () => {
   const helloText = `Hello, ${user?.name}`;
   const handleClick = () => {
     dispatch(setUser(undefined));
+    sessionStorage.clear();
     navigate('/');
   };
 
