@@ -129,7 +129,17 @@ type PlaceProps = {
   place: PlaceType,
 };
 
-const Place: React.FC<PlaceProps> = ({ place }) => {
+const Place: React.FC<PlaceProps> = ({ place }) => (
+  <Box>
+    <PlaceName place={place} />
+    <TablePlacedItems placeId={place.id} />
+  </Box>
+);
+
+const Places: React.FC = () => {
+  const user = useRootSelector((state) => state.shared.user);
+  const places = useRootSelector((state) => state.places.filter((p) => p.userId === user?.id as number));
+
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
@@ -137,29 +147,19 @@ const Place: React.FC<PlaceProps> = ({ place }) => {
   };
 
   return (
-    <Box>
+    <SharedContainer>
       <AddPlaceDialog open={open} handleClose={handleClose} />
-      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="outlined">
+      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="contained">
         {' '}
         <AddIcon fontSize="small" />
         {' '}
         add place
       </Button>
-      <PlaceName place={place} />
-      <TablePlacedItems placeId={place.id} />
-    </Box>
-  );
-};
-
-const Places: React.FC = () => {
-  const user = useRootSelector((state) => state.shared.user);
-  const places = useRootSelector((state) => state.places.filter((p) => p.userId === user?.id as number));
-
-  return (
-    <SharedContainer>
-      {places.map((place) => (
-        <Place key={place.id} place={place} />
-      ))}
+      <>
+        {places.map((place) => (
+          <Place key={place.id} place={place} />
+        ))}
+      </>
     </SharedContainer>
   );
 };

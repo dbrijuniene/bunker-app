@@ -53,7 +53,7 @@ const Navbar: React.FC = () => {
             alt="bunker"
           />
           <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
-          {/* <StyledNavLink to="/items">Items</StyledNavLink> */}
+          <StyledNavLink to="/items">Items</StyledNavLink>
           <StyledNavLink to="/places">Places</StyledNavLink>
           <Box sx={{ flexGrow: 2 }} />
           <Typography sx={{ margin: '0 16px' }} color="text.primary">
