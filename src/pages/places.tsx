@@ -114,11 +114,11 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
             </Typography>
             <IconButton onClick={() => { setEdit(true); }}><EditRoundedIcon color="info" fontSize="small" /></IconButton>
             {placesLength !== 1
-            && (
-            <IconButton onClick={handleDeleteClick}>
-              <PlaylistRemoveIcon color="error" fontSize="medium" />
-            </IconButton>
-            )}
+              && (
+                <IconButton onClick={handleDeleteClick}>
+                  <PlaylistRemoveIcon color="error" fontSize="medium" />
+                </IconButton>
+              )}
           </>
         )}
     </Stack>
@@ -139,7 +139,6 @@ const Place: React.FC<PlaceProps> = ({ place }) => (
 const Places: React.FC = () => {
   const user = useRootSelector((state) => state.shared.user);
   const places = useRootSelector((state) => state.places.filter((p) => p.userId === user?.id as number));
-
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {
@@ -149,7 +148,7 @@ const Places: React.FC = () => {
   return (
     <SharedContainer>
       <AddPlaceDialog open={open} handleClose={handleClose} />
-      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="contained">
+      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="outlined">
         {' '}
         <AddIcon fontSize="small" />
         {' '}

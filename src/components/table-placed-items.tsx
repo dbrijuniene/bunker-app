@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableFooter from '@mui/material/TableFooter';
 import TableRow from '@mui/material/TableRow';
 import {
-  Button, IconButton, Paper, Chip, TablePagination, Stack, Grid,
+  Button, IconButton, Paper, Chip, TablePagination, Grid,
 } from '@mui/material';
 // import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -96,7 +96,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
               .map((row) => (
                 <TableRow
                   key={row.id}
-                  sx={{ '&:last-child td, &:last-child th, &:nth-last-child(odd)': { border: -1, bgcolor: 'secondary.main' } }}
+                  sx={{ '&::nth-last-of-type td, &::nth-last-of-type th, &::nth-last-of-type(odd)': { border: -1, bgcolor: 'secondary.main' } }}
                 >
                   <TableCell component="th" scope="row">{row.name}</TableCell>
                   <TableCell align="right">{row.quantity}</TableCell>
@@ -163,7 +163,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
                           }}
                           onPageChange={handleChangePage}
                           onRowsPerPageChange={handleChangeRowsPerPage}
-                          sx={{ '&:nth-last-child(odd)': { border: 0 } }}
+                          sx={{ '&:nth-last-of-type(odd)': { border: 0 } }}
                         />
                       </Grid>
                     </Grid>
