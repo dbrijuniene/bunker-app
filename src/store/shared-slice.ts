@@ -9,8 +9,13 @@ export const login = createAsyncThunk('shared/login', async (crudentials: Cruden
   const response = await axios.get<TemporaryUser[]>(
     `http://localhost:8000/users?email=${crudentials.email}&password=${crudentials.password}`,
   );
-  thunkAPI.dispatch(getPlaces(response.data[0].id));
-  return response.data;
+
+  if (response.data && response.data.length > 0) {
+    thunkAPI.dispatch(getPlaces(response.data[0].id));
+    return response.data[0];
+  }
+
+  return thunkAPI.rejectWithValue('No such user');
 });
 
 export const register = createAsyncThunk('shared/register', async (newUser: UserRegistration) => {
@@ -25,17 +30,12 @@ export const register = createAsyncThunk('shared/register', async (newUser: User
   }
 });
 
-const initialState = (): SharedState => {
-  const sessionUserId = sessionStorage.getItem('id') as unknown as number;
-  const sessionUserName = sessionStorage.getItem('name');
-  const user = sessionUserId && sessionUserName ? { id: sessionUserId, name: sessionUserName } : undefined;
+const initialState = (): SharedState => ({
+  loading: false,
+  serverErrorMsg: undefined,
+  user: undefined,
+});
 
-  return {
-    loading: false,
-    serverErrorMsg: undefined,
-    user,
-  };
-};
 export const sharedSlice = createSlice({
   name: 'shared',
   initialState,
@@ -60,16 +60,12 @@ export const sharedSlice = createSlice({
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
-      state.serverErrorMsg = action.error.message;
+      state.serverErrorMsg = action.payload as string;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      if (action.payload.length === 1) {
-        state.user = { id: action.payload[0].id, name: action.payload[0].name };
-        sessionStorage.setItem('id', action.payload[0].id as unknown as string);
-        sessionStorage.setItem('name', action.payload[0].name);
-      } else {
-        state.serverErrorMsg = 'No such user';
-      }
+      state.user = { id: action.payload.id, name: action.payload.name };
+      localStorage.setItem('login', action.payload.email);
+      sessionStorage.setItem('id', action.payload.id as unknown as string);
       state.loading = false;
     });
     builder.addCase(register.pending, (state) => {
@@ -83,7 +79,6 @@ export const sharedSlice = createSlice({
       state.loading = false;
       state.user = { id: action.payload.id, name: action.payload.name };
       sessionStorage.setItem('id', action.payload.id as unknown as string);
-      sessionStorage.setItem('name', action.payload.name);
     });
   },
 });

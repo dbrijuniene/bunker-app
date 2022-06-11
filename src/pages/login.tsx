@@ -29,13 +29,9 @@ const LoginPage: React.FC = () => {
         password: values.password,
       };
 
-      try {
-        await dispatch(login(crudential)).unwrap();
-        localStorage.setItem('login', values.email);
+      await dispatch(login(crudential)).unwrap().then(() => {
         navigate('/dashboard');
-      } catch (error) {
-        dispatch(setServerErrorMsg(error as unknown as string));
-      }
+      });
     },
 
     onReset: () => navigate('/registration'),
