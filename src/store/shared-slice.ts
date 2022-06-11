@@ -52,6 +52,10 @@ export const sharedSlice = createSlice({
     setUser: (state: SharedState, action: PayloadAction<LoggedUser | undefined>) => {
       state.user = action.payload;
     },
+    logout: () => {
+      // Implementuota index.tsx rootReduceryje
+      // https://stackoverflow.com/questions/59061161/how-to-reset-state-of-redux-store-when-using-configurestore-from-reduxjs-toolki
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
@@ -84,7 +88,7 @@ export const sharedSlice = createSlice({
 });
 
 export const {
-  setLoading, setServerErrorMsg, resetServerErrorMsg, setUser,
+  setLoading, setServerErrorMsg, resetServerErrorMsg, setUser, logout,
 } = sharedSlice.actions;
 
 export default sharedSlice.reducer;

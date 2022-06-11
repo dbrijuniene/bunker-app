@@ -12,7 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useRootSelector } from '../store/hooks';
-import { setUser } from '../store/shared-slice';
+import { logout } from '../store/shared-slice';
 
 const StyledNavLink = styled(NavLink)(({ theme }) => ({
   display: 'inline-flex',
@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
 
   const helloText = `Hello, ${user?.name}`;
   const handleClick = () => {
-    dispatch(setUser(undefined));
+    dispatch(logout());
     sessionStorage.clear();
     navigate('/');
   };
