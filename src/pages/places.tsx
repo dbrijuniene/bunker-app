@@ -137,8 +137,7 @@ const Place: React.FC<PlaceProps> = ({ place }) => (
 );
 
 const Places: React.FC = () => {
-  const user = useRootSelector((state) => state.shared.user);
-  const places = useRootSelector((state) => state.places.filter((p) => p.userId === user?.id as number));
+  const places = useRootSelector((state) => state.places);
   const [open, setOpen] = React.useState(false);
 
   const handleClose = () => {

@@ -45,10 +45,8 @@ type TablePlacedItemsProps = {
 };
 
 const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
-  const user = useRootSelector((state) => state.shared.user);
-
   const placeIds = useRootSelector(
-    (state) => state.places.filter((p) => p.userId === user?.id as number).map((p) => p.id),
+    (state) => state.places.map((p) => p.id),
   );
   const items = useRootSelector(
     (state) => state.items.filter((i) => (placeId ? i.placeId === placeId : placeIds.indexOf(i.placeId) !== -1)),
@@ -74,46 +72,45 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
     setOpen(true);
   };
 
-  return (user
-    ? (
-      <TableContainer sx={{ maxWidth: 1140, margin: '20px auto', breakpoints: 600 }} component={Paper}>
-        <Table aria-label="custom pagination table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="right">Quantity</TableCell>
-              <TableCell align="center">Unit</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="right">Valid until</TableCell>
-              {placeId && (<TableCell />)}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : items
-            )
-              .map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ '&::nth-last-of-type td, &::nth-last-of-type th, &::nth-last-of-type(odd)': { border: -1, bgcolor: 'secondary.main' } }}
-                >
-                  <TableCell component="th" scope="row">{row.name}</TableCell>
-                  <TableCell align="right">{row.quantity}</TableCell>
-                  <TableCell align="center">{row.units}</TableCell>
-                  <TableCell align="center"><StatusDisplay status={row.status} validUntil={new Date(row.validUntil)} /></TableCell>
-                  <TableCell align="right">{format(new Date(row.validUntil), 'PPP')}</TableCell>
-                  {placeId
+  return (
+    <TableContainer sx={{ maxWidth: 1140, margin: '20px auto', breakpoints: 600 }} component={Paper}>
+      <Table aria-label="custom pagination table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">Quantity</TableCell>
+            <TableCell align="center">Unit</TableCell>
+            <TableCell align="center">Status</TableCell>
+            <TableCell align="right">Valid until</TableCell>
+            {placeId && (<TableCell />)}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {(rowsPerPage > 0
+            ? items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : items
+          )
+            .map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&::nth-last-of-type td, &::nth-last-of-type th, &::nth-last-of-type(odd)': { border: -1, bgcolor: 'secondary.main' } }}
+              >
+                <TableCell component="th" scope="row">{row.name}</TableCell>
+                <TableCell align="right">{row.quantity}</TableCell>
+                <TableCell align="center">{row.units}</TableCell>
+                <TableCell align="center"><StatusDisplay status={row.status} validUntil={new Date(row.validUntil)} /></TableCell>
+                <TableCell align="right">{format(new Date(row.validUntil), 'PPP')}</TableCell>
+                {placeId
                     && (
                       <TableCell align="right">
                         {/* <IconButton onClick={handleOpen}><EditRoundedIcon color="info" /></IconButton> */}
                         <IconButton onClick={() => dispatch(removeItem(row.id))}><DeleteForeverIcon color="error" /></IconButton>
                       </TableCell>
                     )}
-                </TableRow>
-              ))}
-          </TableBody>
-          {placeId
+              </TableRow>
+            ))}
+        </TableBody>
+        {placeId
             && (
               <TableFooter>
                 <TableRow>
@@ -172,9 +169,8 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
                 <ItemDialog open={open} handleClose={handleClose} placeId={placeId} />
               </TableFooter>
             )}
-        </Table>
-      </TableContainer>
-    ) : null
+      </Table>
+    </TableContainer>
   );
 };
 
