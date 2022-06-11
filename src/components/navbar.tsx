@@ -6,7 +6,9 @@ import {
   styled,
   Typography,
   Box,
+  useMediaQuery,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useRootSelector } from '../store/hooks';
@@ -33,6 +35,7 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 }));
 
 const Navbar: React.FC = () => {
+  const theme = useTheme();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const user = useRootSelector((state) => state.shared.user);
@@ -43,29 +46,35 @@ const Navbar: React.FC = () => {
     sessionStorage.clear();
     navigate('/');
   };
+  const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
 
   return (
     <AppBar position="static" sx={{ bgcolor: 'primary.light' }}>
       <Container sx={{ px: { xs: 0, sm: 0 } }}>
         <Toolbar>
-          <img
-            style={{ width: '150px', height: '100px' }}
-            src="Bunker_logo.jpg"
-            alt="bunker"
-          />
-          <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
-          <StyledNavLink to="/items">Items</StyledNavLink>
-          <StyledNavLink to="/places">Places</StyledNavLink>
-          <Box sx={{ flexGrow: 2 }} />
-          <Typography sx={{ margin: '0 16px' }} color="text.primary">
-            {helloText}
-          </Typography>
-          <LogoutIcon
-            color="primary"
-            fontSize="medium"
-            sx={{ fontSize: 35, cursor: 'pointer' }}
-            onClick={handleClick}
-          />
+          {isSmall
+            ? (
+              <>
+                <img
+                  style={{ width: '150px', height: '100px' }}
+                  src="Bunker_logo.jpg"
+                  alt="bunker"
+                />
+                <StyledNavLink to="/dashboard">Dashboard</StyledNavLink>
+                <StyledNavLink to="/items">Items</StyledNavLink>
+                <StyledNavLink to="/places">Places</StyledNavLink>
+                <Box sx={{ flexGrow: 2 }} />
+                <Typography sx={{ margin: '0 16px' }} color="text.primary">
+                  {helloText}
+                </Typography>
+                <LogoutIcon
+                  color="primary"
+                  fontSize="medium"
+                  sx={{ fontSize: 35, cursor: 'pointer' }}
+                  onClick={handleClick}
+                />
+              </>
+            ) : (<div style={{ color: 'black' }}>This is the meniu</div>)}
         </Toolbar>
       </Container>
     </AppBar>

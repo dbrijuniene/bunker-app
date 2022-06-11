@@ -1,23 +1,19 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NewPlace, PlacesState, PlaceUpdate } from '../types/index';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
+import {
+  NewPlace, Place, PlacesState, PlaceUpdate,
+} from '../types/index';
+import { getItems } from './items-slice';
 
-const initialState: PlacesState = [
-  {
-    id: 1,
-    userId: 1,
-    name: 'Backpack',
-  },
-  {
-    id: 2,
-    userId: 1,
-    name: 'Home storage',
-  },
-  {
-    id: 3,
-    userId: 0,
-    name: 'Backpack',
-  },
-];
+export const getPlaces = createAsyncThunk('places/getPlaces', async (userId: number, ThunkAPI) => {
+  const response = await axios.get<Place[]>(
+    `http://localhost:8000/places?userId=${userId}`,
+  );
+  ThunkAPI.dispatch(getItems(response.data.map((d) => d.id)));
+  return response.data;
+});
+
+const initialState: PlacesState = [];
 
 export const placesSlice = createSlice({
   name: 'places',
@@ -34,6 +30,9 @@ export const placesSlice = createSlice({
     addPlace: (state: PlacesState, action: PayloadAction<NewPlace>) => {
       state.push({ id: state[state.length - 1].id + 1, ...action.payload });
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getPlaces.fulfilled, (state, action) => action.payload);
   },
 });
 

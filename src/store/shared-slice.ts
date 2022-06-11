@@ -3,11 +3,13 @@ import axios from 'axios';
 import {
   Crudentials, LoggedUser, SharedState, TemporaryUser, UserRegistration,
 } from '../types/index';
+import { getPlaces } from './places-slice';
 
-export const login = createAsyncThunk('shared/login', async (crudentials: Crudentials) => {
+export const login = createAsyncThunk('shared/login', async (crudentials: Crudentials, thunkAPI) => {
   const response = await axios.get<TemporaryUser[]>(
-    `http://localhost:8000/users?email=${crudentials.email}`,
+    `http://localhost:8000/users?email=${crudentials.email}&password=${crudentials.password}`,
   );
+  thunkAPI.dispatch(getPlaces(response.data[0].id));
   return response.data;
 });
 
@@ -61,18 +63,14 @@ export const sharedSlice = createSlice({
       state.serverErrorMsg = action.error.message;
     });
     builder.addCase(login.fulfilled, (state, action) => {
-      state.loading = false;
       if (action.payload.length === 1) {
-        if (action.payload[0].password === action.meta.arg.password) {
-          state.user = { id: action.payload[0].id, name: action.payload[0].name };
-        } else {
-          state.serverErrorMsg = 'Incorrect password';
-        }
+        state.user = { id: action.payload[0].id, name: action.payload[0].name };
+        sessionStorage.setItem('id', action.payload[0].id as unknown as string);
+        sessionStorage.setItem('name', action.payload[0].name);
       } else {
         state.serverErrorMsg = 'No such user';
       }
-      sessionStorage.setItem('id', action.payload[0].id as unknown as string);
-      sessionStorage.setItem('name', action.payload[0].name);
+      state.loading = false;
     });
     builder.addCase(register.pending, (state) => {
       state.loading = true;
