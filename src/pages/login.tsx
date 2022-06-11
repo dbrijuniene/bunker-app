@@ -6,7 +6,7 @@ import { TextField } from '@mui/material';
 import AuthForm from '../components/auth-form';
 import { Crudentials } from '../types';
 import { useAppDispatch } from '../store/hooks';
-import { login, setServerErrorMsg } from '../store/shared-slice';
+import { login } from '../store/shared-slice';
 
 const LoginPage: React.FC = () => {
   const usedEmail = localStorage.getItem('login');
