@@ -165,8 +165,8 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
                       </Grid>
                     </Grid>
                   </TableCell>
+                  <ItemDialog open={open} handleClose={handleClose} placeId={placeId} />
                 </TableRow>
-                <ItemDialog open={open} handleClose={handleClose} placeId={placeId} />
               </TableFooter>
             )}
       </Table>
