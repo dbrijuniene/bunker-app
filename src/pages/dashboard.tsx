@@ -2,14 +2,19 @@ import React from 'react';
 import {
   Stack, Paper, Typography, List, ListItem, ListItemText, Grid,
 } from '@mui/material';
+import { isBefore } from 'date-fns';
 import SharedContainer from '../components/shared-container';
+import { useRootSelector } from '../store/hooks';
+import { PlacedItem } from '../types/placed-item';
+import Status from '../types/status-enum';
 
 type ListByStatusProps = {
   bgcolor: string,
   label: string,
+  items: PlacedItem[],
 };
 
-const ListByStatus: React.FC<ListByStatusProps> = ({ bgcolor, label }) => (
+const ListByStatus: React.FC<ListByStatusProps> = ({ bgcolor, label, items }) => (
   <Paper elevation={3}>
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -38,52 +43,61 @@ const ListByStatus: React.FC<ListByStatusProps> = ({ bgcolor, label }) => (
             height: 350,
           }}
         >
-          <ListItem sx={{ textAlign: 'center' }}>
-            <ListItemText
-              primary="Single-line item"
-            />
-          </ListItem>
+          {items.map((item) => (
+            <ListItem sx={{ textAlign: 'center' }}>
+              <ListItemText
+                primary={item.name}
+              />
+            </ListItem>
+          ))}
         </List>
       </Grid>
     </Grid>
   </Paper>
 );
 
-const Dashboard: React.FC = () => (
-  <SharedContainer>
-    <Stack
-      direction="column"
-      justifyContent="center"
-      alignItems="center"
-      spacing={3}
-    >
-      <img style={{ width: '770px', height: '550px' }} src="mainPhoto.webp" alt="shoping" />
-      <Typography variant="h2" sx={{ fontWeight: 700, pb: 4 }}>
-        Organize it all with Bunker!
-      </Typography>
+const Dashboard: React.FC = () => {
+  const items = useRootSelector((state) => state.items);
+
+  return (
+    <SharedContainer>
       <Stack
-        direction="row"
+        direction="column"
         justifyContent="center"
         alignItems="center"
-        spacing={4}
-        style={{ marginBottom: '24px' }}
+        spacing={3}
       >
-        <ListByStatus
-          bgcolor="#498ac4"
-          label="Wish"
-        />
-        <ListByStatus
-          bgcolor="#497738"
-          label="Packed"
-        />
-        <ListByStatus
-          bgcolor="#bf3e28"
-          label="Expired"
-        />
+        <img style={{ width: '770px', height: '550px' }} src="mainPhoto.webp" alt="shoping" />
+        <Typography variant="h2" sx={{ fontWeight: 700, pb: 4 }}>
+          Organize it all with Bunker!
+        </Typography>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={4}
+          style={{ marginBottom: '24px' }}
+        >
+          <ListByStatus
+            bgcolor="#498ac4"
+            label="Wish"
+            items={items.filter((item) => item.status === Status.Wish)}
+          />
+          <ListByStatus
+            bgcolor="#497738"
+            label="Packed"
+            items={items.filter((item) => isBefore(new Date(), new Date(item.validUntil)) && item.status === Status.Packed)}
+          />
+          <ListByStatus
+            bgcolor="#bf3e28"
+            label="Expired"
+            items={items.filter((item) => item.status === Status.Packed && !isBefore(new Date(), new Date(item.validUntil)))}
+          />
 
+        </Stack>
       </Stack>
-    </Stack>
-  </SharedContainer>
-);
+    </SharedContainer>
+  );
+};
 
 export default Dashboard;
