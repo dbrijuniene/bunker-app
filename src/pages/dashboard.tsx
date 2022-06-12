@@ -44,7 +44,7 @@ const ListByStatus: React.FC<ListByStatusProps> = ({ bgcolor, label, items }) =>
           }}
         >
           {items.map((item) => (
-            <ListItem sx={{ textAlign: 'center' }}>
+            <ListItem key={item.id} sx={{ textAlign: 'center' }}>
               <ListItemText
                 primary={item.name}
               />
