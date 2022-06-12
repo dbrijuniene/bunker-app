@@ -161,15 +161,16 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
                           onPageChange={handleChangePage}
                           onRowsPerPageChange={handleChangeRowsPerPage}
                           sx={{ '&:nth-last-of-type(odd)': { border: 0 } }}
+                          component="div"
                         />
                       </Grid>
                     </Grid>
                   </TableCell>
-                  <ItemDialog open={open} handleClose={handleClose} placeId={placeId} />
                 </TableRow>
               </TableFooter>
             )}
       </Table>
+      {placeId && <ItemDialog open={open} handleClose={handleClose} placeId={placeId} /> }
     </TableContainer>
   );
 };
