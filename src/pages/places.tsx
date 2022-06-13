@@ -147,7 +147,7 @@ const Places: React.FC = () => {
   return (
     <SharedContainer>
       <AddPlaceDialog open={open} handleClose={handleClose} />
-      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="outlined">
+      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="contained">
         {' '}
         <AddIcon fontSize="small" />
         {' '}
