@@ -125,10 +125,14 @@ const Navbar: React.FC = () => {
                   MenuListProps={{
                     'aria-labelledby': 'basic-button',
                   }}
+                  sx={{ textAlign: 'center' }}
                 >
                   <MenuItem onClick={handleClose} component={NavLink} to="/dashboard">Dashboard</MenuItem>
                   <MenuItem onClick={handleClose} component={NavLink} to="/items">Items</MenuItem>
                   <MenuItem onClick={handleClose} component={NavLink} to="/places">Places</MenuItem>
+                  <Button size="small" variant="contained" onClick={handleClick}>
+                    Log Out
+                  </Button>
                 </Menu>
               </Stack>
             )}
