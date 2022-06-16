@@ -9,6 +9,7 @@ import {
   Typography,
   TextField,
   Stack,
+  useMediaQuery,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -22,6 +23,7 @@ import { removePlace, updatePlace } from '../store/places-slice';
 import AddPlaceDialog from '../components/add-place-dialog';
 import { removeItemsByPlaceId } from '../store/items-slice';
 import SharedContainer from '../components/shared-container';
+import theme from '../styles/theme';
 
 type PlaceNameProps = {
   place: PlaceType,
@@ -140,6 +142,8 @@ const Places: React.FC = () => {
   const places = useRootSelector((state) => state.places);
   const [open, setOpen] = React.useState(false);
 
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -147,11 +151,14 @@ const Places: React.FC = () => {
   return (
     <SharedContainer>
       <AddPlaceDialog open={open} handleClose={handleClose} />
-      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="contained">
-        {' '}
-        <AddIcon fontSize="small" />
-        {' '}
-        add place
+      <Button
+        onClick={() => setOpen(true)}
+        sx={{ margin: '25px' }}
+        size={isSmall ? 'small' : 'medium'}
+        variant="contained"
+        startIcon={<AddIcon fontSize="small" />}
+      >
+        Add place
       </Button>
       <>
         {places.map((place) => (

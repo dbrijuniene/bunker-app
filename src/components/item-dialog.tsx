@@ -156,7 +156,7 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
             )}
           />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', pb: '25px' }}>
+        <DialogActions sx={{ justifyContent: 'center', paddingBottom: '25px' }}>
           <Button disabled={!(formik.isValid && formik.dirty)} type="submit" variant="contained">Save</Button>
           <Button type="reset">Cancel</Button>
         </DialogActions>

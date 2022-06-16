@@ -67,8 +67,14 @@ const AddPlaceDialog: React.FC<AddPlaceDialogProps> = ({
             helperText={formik.touched.name && formik.errors.name}
           />
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', pb: '25px' }}>
-          <Button disabled={!(formik.isValid && formik.dirty)} type="submit" variant="contained">Save</Button>
+        <DialogActions sx={{ justifyContent: 'center', paddingBottom: '25px' }}>
+          <Button
+            disabled={!(formik.isValid && formik.dirty)}
+            type="submit"
+            variant="contained"
+          >
+            Save
+          </Button>
           <Button type="reset">Cancel</Button>
         </DialogActions>
       </Box>

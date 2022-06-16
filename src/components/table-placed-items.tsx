@@ -63,10 +63,12 @@ type AddButtonProps = {
 };
 
 const AddButton: React.FC<AddButtonProps> = ({ handleOpen, small = false }) => (
-  <Button onClick={handleOpen} variant="outlined" size={small ? 'small' : 'medium'}>
-    {' '}
-    <AddIcon fontSize="small" />
-    {' '}
+  <Button
+    onClick={handleOpen}
+    variant="outlined"
+    size={small ? 'small' : 'medium'}
+    startIcon={<AddIcon fontSize="small" />}
+  >
     Add Item
   </Button>
 );
