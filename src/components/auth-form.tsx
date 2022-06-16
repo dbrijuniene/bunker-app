@@ -6,10 +6,12 @@ import {
   Container,
   Paper,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useAppDispatch, useRootSelector } from '../store/hooks';
 import { resetServerErrorMsg } from '../store/shared-slice';
+import theme from '../styles/theme';
 
 type AuthFormProps = {
   formTitle: string,
@@ -34,6 +36,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
   const loading = useRootSelector((state) => state.shared.loading);
   const serverErrorMsg = useRootSelector((state) => state.shared.serverErrorMsg);
   const dispatch = useAppDispatch();
+
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Container sx={{
@@ -82,7 +86,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
         <LoadingButton
           loading={loading}
           disabled={disabled}
-          variant="outlined"
+          variant="contained"
           type="submit"
         >
           {submitText}
@@ -91,7 +95,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           <Button variant="text" type="reset" onClick={onReset}>{resetText}</Button>
         )}
       </Paper>
-      <img style={{ width: '650px', height: '250px' }} src="organize.webp" alt="organize" />
+      <img style={isSmall ? { width: '460px', height: '200px' } : { width: '650px', height: '250px' }} src="organize.webp" alt="organize" />
     </Container>
   );
 };

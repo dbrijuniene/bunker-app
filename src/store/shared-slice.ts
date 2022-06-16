@@ -3,12 +3,19 @@ import axios from 'axios';
 import {
   Crudentials, LoggedUser, SharedState, TemporaryUser, UserRegistration,
 } from '../types/index';
+import { getPlaces } from './places-slice';
 
-export const login = createAsyncThunk('shared/login', async (crudentials: Crudentials) => {
+export const login = createAsyncThunk('shared/login', async (crudentials: Crudentials, thunkAPI) => {
   const response = await axios.get<TemporaryUser[]>(
-    `http://localhost:8000/users?email=${crudentials.email}`,
+    `http://localhost:8000/users?email=${crudentials.email}&password=${crudentials.password}`,
   );
-  return response.data;
+
+  if (response.data && response.data.length > 0) {
+    thunkAPI.dispatch(getPlaces(response.data[0].id));
+    return response.data[0];
+  }
+
+  return thunkAPI.rejectWithValue('No such user');
 });
 
 export const register = createAsyncThunk('shared/register', async (newUser: UserRegistration) => {
@@ -23,11 +30,11 @@ export const register = createAsyncThunk('shared/register', async (newUser: User
   }
 });
 
-const initialState: SharedState = {
+const initialState = (): SharedState => ({
   loading: false,
   serverErrorMsg: undefined,
   user: undefined,
-};
+});
 
 export const sharedSlice = createSlice({
   name: 'shared',
@@ -45,26 +52,25 @@ export const sharedSlice = createSlice({
     setUser: (state: SharedState, action: PayloadAction<LoggedUser | undefined>) => {
       state.user = action.payload;
     },
+    logout: () => {
+      // Implementuota index.tsx rootReduceryje
+      // https://stackoverflow.com/questions/59061161/how-to-reset-state-of-redux-store-when-using-configurestore-from-reduxjs-toolki
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
       state.loading = true;
+      sessionStorage.clear();
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
-      state.serverErrorMsg = action.error.message;
+      state.serverErrorMsg = action.payload as string;
     });
     builder.addCase(login.fulfilled, (state, action) => {
+      state.user = { id: action.payload.id, name: action.payload.name };
+      localStorage.setItem('login', action.payload.email);
+      sessionStorage.setItem('id', action.payload.id as unknown as string);
       state.loading = false;
-      if (action.payload.length === 1) {
-        if (action.payload[0].password === action.meta.arg.password) {
-          state.user = { id: action.payload[0].id, name: action.payload[0].name };
-        } else {
-          state.serverErrorMsg = 'Incorrect password';
-        }
-      } else {
-        state.serverErrorMsg = 'No such user';
-      }
     });
     builder.addCase(register.pending, (state) => {
       state.loading = true;
@@ -76,12 +82,13 @@ export const sharedSlice = createSlice({
     builder.addCase(register.fulfilled, (state, action) => {
       state.loading = false;
       state.user = { id: action.payload.id, name: action.payload.name };
+      sessionStorage.setItem('id', action.payload.id as unknown as string);
     });
   },
 });
 
 export const {
-  setLoading, setServerErrorMsg, resetServerErrorMsg, setUser,
+  setLoading, setServerErrorMsg, resetServerErrorMsg, setUser, logout,
 } = sharedSlice.actions;
 
 export default sharedSlice.reducer;

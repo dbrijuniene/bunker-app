@@ -9,6 +9,7 @@ import {
   Typography,
   TextField,
   Stack,
+  useMediaQuery,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -22,6 +23,7 @@ import { removePlace, updatePlace } from '../store/places-slice';
 import AddPlaceDialog from '../components/add-place-dialog';
 import { removeItemsByPlaceId } from '../store/items-slice';
 import SharedContainer from '../components/shared-container';
+import theme from '../styles/theme';
 
 type PlaceNameProps = {
   place: PlaceType,
@@ -114,11 +116,11 @@ const PlaceName: React.FC<PlaceNameProps> = ({ place }) => {
             </Typography>
             <IconButton onClick={() => { setEdit(true); }}><EditRoundedIcon color="info" fontSize="small" /></IconButton>
             {placesLength !== 1
-            && (
-            <IconButton onClick={handleDeleteClick}>
-              <PlaylistRemoveIcon color="error" fontSize="medium" />
-            </IconButton>
-            )}
+              && (
+                <IconButton onClick={handleDeleteClick}>
+                  <PlaylistRemoveIcon color="error" fontSize="medium" />
+                </IconButton>
+              )}
           </>
         )}
     </Stack>
@@ -129,37 +131,40 @@ type PlaceProps = {
   place: PlaceType,
 };
 
-const Place: React.FC<PlaceProps> = ({ place }) => {
+const Place: React.FC<PlaceProps> = ({ place }) => (
+  <Box>
+    <PlaceName place={place} />
+    <TablePlacedItems placeId={place.id} />
+  </Box>
+);
+
+const Places: React.FC = () => {
+  const places = useRootSelector((state) => state.places);
   const [open, setOpen] = React.useState(false);
+
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
-    <Box>
-      <AddPlaceDialog open={open} handleClose={handleClose} />
-      <Button onClick={() => setOpen(true)} sx={{ margin: '25px' }} variant="outlined">
-        {' '}
-        <AddIcon fontSize="small" />
-        {' '}
-        add place
-      </Button>
-      <PlaceName place={place} />
-      <TablePlacedItems placeId={place.id} />
-    </Box>
-  );
-};
-
-const Places: React.FC = () => {
-  const user = useRootSelector((state) => state.shared.user);
-  const places = useRootSelector((state) => state.places.filter((p) => p.userId === user?.id as number));
-
-  return (
     <SharedContainer>
-      {places.map((place) => (
-        <Place key={place.id} place={place} />
-      ))}
+      <AddPlaceDialog open={open} handleClose={handleClose} />
+      <Button
+        onClick={() => setOpen(true)}
+        sx={{ margin: '25px' }}
+        size={isSmall ? 'small' : 'medium'}
+        variant="contained"
+        startIcon={<AddIcon fontSize="small" />}
+      >
+        Add place
+      </Button>
+      <>
+        {places.map((place) => (
+          <Place key={place.id} place={place} />
+        ))}
+      </>
     </SharedContainer>
   );
 };

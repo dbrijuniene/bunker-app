@@ -6,7 +6,7 @@ import { TextField } from '@mui/material';
 import AuthForm from '../components/auth-form';
 import { Crudentials } from '../types';
 import { useAppDispatch } from '../store/hooks';
-import { login, setServerErrorMsg } from '../store/shared-slice';
+import { login } from '../store/shared-slice';
 
 const LoginPage: React.FC = () => {
   const usedEmail = localStorage.getItem('login');
@@ -29,13 +29,9 @@ const LoginPage: React.FC = () => {
         password: values.password,
       };
 
-      try {
-        await dispatch(login(crudential)).unwrap();
-        localStorage.setItem('login', values.email);
+      await dispatch(login(crudential)).unwrap().then(() => {
         navigate('/dashboard');
-      } catch (error) {
-        dispatch(setServerErrorMsg(error as unknown as string));
-      }
+      });
     },
 
     onReset: () => navigate('/registration'),

@@ -1,46 +1,16 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { formatISO } from 'date-fns';
 import { PlacedItemsState, PlacedItem, NewPlacedItem } from '../types/index';
-import Status from '../types/status-enum';
 
-const initialState: PlacedItemsState = [
-  {
-    id: 1,
-    placeId: 2,
-    name: 'Buckwheat',
-    units: 'g',
-    quantity: 500,
-    status: Status.Packed,
-    validUntil: formatISO(new Date(2022, 12, 25)),
-  },
-  {
-    id: 2,
-    placeId: 2,
-    name: 'Canned meat',
-    units: 'pieces',
-    quantity: 5,
-    status: Status.Wish,
-    validUntil: formatISO(new Date(2022, 12, 18)),
-  },
-  {
-    id: 3,
-    placeId: 1,
-    name: 'Water',
-    units: 'l',
-    quantity: 5,
-    status: Status.Wish,
-    validUntil: formatISO(new Date(2022, 4, 14)),
-  },
-  {
-    id: 4,
-    placeId: 3,
-    name: 'Canned tuna',
-    units: 'pieces',
-    quantity: 10,
-    status: Status.Packed,
-    validUntil: formatISO(new Date(2022, 5, 30)),
-  },
-];
+export const getItems = createAsyncThunk('items/getItems', async (placeIds: number[]) => {
+  const response = await axios.get<PlacedItem[]>(
+    `http://localhost:8000/items?placeId=${placeIds.join('&placeId=')}`,
+  );
+  return response.data;
+});
+
+const initialState: PlacedItemsState = [];
 
 export const itemsSlice = createSlice({
   name: 'items',
@@ -66,6 +36,9 @@ export const itemsSlice = createSlice({
         const index = state.map((item) => item.id).indexOf(action.payload.id);
         state[index] = { ...action.payload };
       },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getItems.fulfilled, (state, action) => action.payload);
   },
 });
 

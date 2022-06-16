@@ -16,9 +16,7 @@ type StatusFormControlProps = {
   error: boolean | undefined,
   helperText: string | false | undefined
 };
-const StatusFormControl: React.FC<StatusFormControlProps> = ({
-  onChange, onBlur, value, error, helperText,
-}) => {
+const StatusFormControl: React.FC<StatusFormControlProps> = () => {
   const [status, setStatus] = React.useState<Status | string>('');
   const [open, setOpen] = React.useState(false);
 
