@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  Stack, Paper, Typography, List, ListItem, ListItemText, Grid,
+  Stack, Paper, Typography, List, ListItem, ListItemText, Grid, useMediaQuery,
 } from '@mui/material';
 import { isBefore } from 'date-fns';
 import SharedContainer from '../components/shared-container';
 import { useRootSelector } from '../store/hooks';
 import { PlacedItem } from '../types/placed-item';
 import Status from '../types/status-enum';
+import theme from '../styles/theme';
 
 type ListByStatusProps = {
   bgcolor: string,
@@ -58,6 +59,7 @@ const ListByStatus: React.FC<ListByStatusProps> = ({ bgcolor, label, items }) =>
 
 const Dashboard: React.FC = () => {
   const items = useRootSelector((state) => state.items);
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <SharedContainer>
@@ -67,12 +69,12 @@ const Dashboard: React.FC = () => {
         alignItems="center"
         spacing={3}
       >
-        <img style={{ width: '770px', height: '550px' }} src="mainPhoto.webp" alt="shoping" />
-        <Typography variant="h2" sx={{ fontWeight: 700, pb: 4 }}>
+        <img style={isSmall ? { width: '380px', height: '250px' } : { width: '770px', height: '550px' }} src="mainPhoto.webp" alt="shoping" />
+        <Typography variant="h2" sx={isSmall ? { fontSize: '31px', fontWeight: 700, pb: 4 } : { fontWeight: 700, pb: 4 }}>
           Organize it all with Bunker!
         </Typography>
         <Stack
-          direction="row"
+          direction={isSmall ? 'column' : 'row'}
           justifyContent="center"
           alignItems="center"
           spacing={4}
