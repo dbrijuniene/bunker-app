@@ -74,17 +74,23 @@ const AddButton: React.FC<AddButtonProps> = ({ handleOpen, small = false }) => (
 );
 
 type TablePlacedItemsProps = {
+  filterValue?: string
   placeId?: number
 };
 
-const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
+const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeId }) => {
+  // https://stackoverflow.com/questions/6158828/searching-for-name-using-javascript
+  const regexExpression = filterValue ? new RegExp(`${filterValue}.+$`, 'i') : undefined;
+
   const placeIds = useRootSelector(
     (state) => state.places.map((p) => p.id),
   );
   const items = useRootSelector(
-    (state) => state.items.filter((i) => (placeId ? i.placeId === placeId : placeIds.indexOf(i.placeId) !== -1)),
+    (state) => state.items
+      .filter((i) => (placeId ? i.placeId === placeId : placeIds.indexOf(i.placeId) !== -1))
+      .filter((e) => (regexExpression ? e.name.search(regexExpression) !== -1 : true)),
   );
-  const dispatch = useAppDispatch();
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
@@ -124,28 +130,27 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ placeId }) => {
             {(rowsPerPage > 0
               ? items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : items
-            )
-              .map((row) => (
-                <TableRow
-                  key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: -1 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {`${row.name}: ${row.quantity} (${row.units})`}
-                  </TableCell>
-                  <TableCell padding="none" size="small" align="center">
-                    <StatusDisplay status={row.status} validUntil={new Date(row.validUntil)} />
-                  </TableCell>
-                  <TableCell align="center">{format(new Date(row.validUntil), 'P')}</TableCell>
-                  {placeId
-                    && (
-                      <TableCell padding="none" align="left">
-                        {/* <IconButton size="small"><EditRoundedIcon color="info" /></IconButton> */}
-                        <DeleteButton row={row} />
-                      </TableCell>
-                    )}
-                </TableRow>
-              ))}
+            ).map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: -1 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {`${row.name}: ${row.quantity} (${row.units})`}
+                </TableCell>
+                <TableCell padding="none" size="small" align="center">
+                  <StatusDisplay status={row.status} validUntil={new Date(row.validUntil)} />
+                </TableCell>
+                <TableCell align="center">{format(new Date(row.validUntil), 'P')}</TableCell>
+                {placeId
+                  && (
+                    <TableCell padding="none" align="left">
+                      {/* <IconButton size="small"><EditRoundedIcon color="info" /></IconButton> */}
+                      <DeleteButton row={row} />
+                    </TableCell>
+                  )}
+              </TableRow>
+            ))}
           </TableBody>
           {placeId
             && (
