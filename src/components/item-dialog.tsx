@@ -11,23 +11,24 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useAppDispatch } from '../store/hooks';
-import { addItem } from '../store/items-slice';
+import { addItem, editItem as editItemAction } from '../store/items-slice';
 import Status from '../types/status-enum';
-import { NewPlacedItem } from '../types/new-placed-item';
+import { PlacedItem, NewPlacedItem } from '../types';
 
 type ItemDialogProps = {
   open: boolean,
-  handleClose: () => void
-  placeId: number
+  handleClose: () => void,
+  placeId: number,
+  editItem: PlacedItem | undefined
 };
 
 const ItemDialog: React.FC<ItemDialogProps> = ({
-  open, handleClose, placeId,
+  open, handleClose, placeId, editItem,
 }) => {
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
-    initialValues: {
+    initialValues: editItem || {
       name: '',
       units: '',
       quantity: '',
@@ -59,13 +60,14 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
         units: values.units,
         validUntil: values.validUntil as unknown as Date,
       };
-      dispatch(addItem(newItem));
+      dispatch(editItem ? editItemAction(values as PlacedItem) : addItem(newItem));
       resetForm();
       handleClose();
     },
     onReset: () => {
       handleClose();
     },
+    enableReinitialize: true,
   });
 
   return (

@@ -1,77 +1,15 @@
-import React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableFooter from '@mui/material/TableFooter';
-import TableRow from '@mui/material/TableRow';
+import React, { useEffect, useRef } from 'react';
 import {
-  Button, IconButton, Paper, Chip, TablePagination, Grid, useMediaQuery,
+  Grid, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, useMediaQuery,
 } from '@mui/material';
-// import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/material/styles';
-import { format, isBefore } from 'date-fns';
-import { useDispatch } from 'react-redux';
-import { useRootSelector, useAppDispatch } from '../store/hooks';
-import { removeItem } from '../store/items-slice';
+import { format } from 'date-fns';
+import { useRootSelector } from '../store/hooks';
 import ItemDialog from './item-dialog';
-import Status from '../types/status-enum';
+import AddButton from './table-placed-items/add-item-button';
+import StatusDisplay from './table-placed-items/status-display';
+import TableRowActions from './table-placed-items/table-row-actions';
 import { PlacedItem } from '../types';
-
-type StatusDisplayProps = {
-  status: Status
-  validUntil: Date
-};
-
-const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, validUntil }) => {
-  let result;
-  switch (status) {
-    case Status.Wish:
-      result = <Chip label="Wish" size="small" color="info" />;
-      break;
-    case Status.Packed:
-      result = isBefore(new Date(), validUntil)
-        ? <Chip label="Packed" size="small" color="success" /> : <Chip label="Expired" size="small" color="error" />;
-      break;
-
-    default:
-      break;
-  }
-  return result ?? null;
-};
-
-type DeleteButtonProps = {
-  row: PlacedItem
-};
-
-const DeleteButton: React.FC<DeleteButtonProps> = ({ row }) => {
-  const dispatch = useDispatch();
-
-  return (
-    <IconButton onClick={() => dispatch(removeItem(row.id))} size="small">
-      <DeleteForeverIcon color="error" />
-    </IconButton>
-  );
-};
-
-type AddButtonProps = {
-  handleOpen: () => void,
-  small?: boolean
-};
-
-const AddButton: React.FC<AddButtonProps> = ({ handleOpen, small = false }) => (
-  <Button
-    onClick={handleOpen}
-    variant="outlined"
-    size={small ? 'small' : 'medium'}
-    startIcon={<AddIcon fontSize="small" />}
-  >
-    Add Item
-  </Button>
-);
 
 type TablePlacedItemsProps = {
   filterValue?: string
@@ -95,6 +33,8 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(placeId ? 5 : -1);
+  const [editItem, setEditItem] = React.useState<PlacedItem | undefined>(undefined);
+  const [count, setCount] = React.useState<number>(0);
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -104,12 +44,21 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
     setPage(0);
   };
 
-  const handleClose = () => {
+  const handleDialogClose = () => {
     setOpen(false);
   };
 
-  const handleOpen = () => {
-    setOpen(true);
+  const didMountRef = useRef(false);
+  useEffect(() => {
+    if (didMountRef.current) {
+      setOpen(true);
+    }
+    didMountRef.current = true;
+  }, [editItem, count]);
+
+  const handleDialogOpen = (row?: PlacedItem) => {
+    setEditItem(row);
+    setCount(count + 1);
   };
 
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
@@ -145,8 +94,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                 {placeId
                   && (
                     <TableCell padding="none" align="left">
-                      {/* <IconButton size="small"><EditRoundedIcon color="info" /></IconButton> */}
-                      <DeleteButton row={row} />
+                      <TableRowActions onEdit={() => handleDialogOpen(row)} row={row} />
                     </TableCell>
                   )}
               </TableRow>
@@ -169,7 +117,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                         item
                         xs={2}
                       >
-                        <AddButton handleOpen={handleOpen} small />
+                        <AddButton handleOpen={() => handleDialogOpen()} small />
                       </Grid>
                       <Grid
                         item
@@ -232,8 +180,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                     {placeId
                       && (
                         <TableCell align="right">
-                          {/* <IconButton onClick={handleOpen}><EditRoundedIcon color="info" /></IconButton> */}
-                          <DeleteButton row={row} />
+                          <TableRowActions onEdit={() => handleDialogOpen(row)} row={row} />
                         </TableCell>
                       )}
                   </TableRow>
@@ -260,7 +207,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                             alignItems: 'center',
                           }}
                         >
-                          <AddButton handleOpen={handleOpen} />
+                          <AddButton handleOpen={() => handleDialogOpen()} />
                         </Grid>
                         <Grid
                           item
@@ -295,7 +242,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
               )}
           </Table>
         )}
-      {placeId && <ItemDialog open={open} handleClose={handleClose} placeId={placeId} />}
+      {placeId && <ItemDialog open={open} handleClose={handleDialogClose} placeId={placeId} editItem={editItem} />}
     </TableContainer>
   );
 };
