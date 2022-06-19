@@ -1,77 +1,15 @@
 import React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableFooter from '@mui/material/TableFooter';
-import TableRow from '@mui/material/TableRow';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import {
-  Button, IconButton, Paper, Chip, TablePagination, Grid, useMediaQuery,
+  Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, useMediaQuery,
 } from '@mui/material';
-// import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AddIcon from '@mui/icons-material/Add';
 import { useTheme } from '@mui/material/styles';
-import { format, isBefore } from 'date-fns';
-import { useDispatch } from 'react-redux';
-import { useRootSelector, useAppDispatch } from '../store/hooks';
-import { removeItem } from '../store/items-slice';
+import { format } from 'date-fns';
+import { useRootSelector } from '../store/hooks';
 import ItemDialog from './item-dialog';
-import Status from '../types/status-enum';
-import { PlacedItem } from '../types';
-
-type StatusDisplayProps = {
-  status: Status
-  validUntil: Date
-};
-
-const StatusDisplay: React.FC<StatusDisplayProps> = ({ status, validUntil }) => {
-  let result;
-  switch (status) {
-    case Status.Wish:
-      result = <Chip label="Wish" size="small" color="info" />;
-      break;
-    case Status.Packed:
-      result = isBefore(new Date(), validUntil)
-        ? <Chip label="Packed" size="small" color="success" /> : <Chip label="Expired" size="small" color="error" />;
-      break;
-
-    default:
-      break;
-  }
-  return result ?? null;
-};
-
-type DeleteButtonProps = {
-  row: PlacedItem
-};
-
-const DeleteButton: React.FC<DeleteButtonProps> = ({ row }) => {
-  const dispatch = useDispatch();
-
-  return (
-    <IconButton onClick={() => dispatch(removeItem(row.id))} size="small">
-      <DeleteForeverIcon color="error" />
-    </IconButton>
-  );
-};
-
-type AddButtonProps = {
-  handleOpen: () => void,
-  small?: boolean
-};
-
-const AddButton: React.FC<AddButtonProps> = ({ handleOpen, small = false }) => (
-  <Button
-    onClick={handleOpen}
-    variant="outlined"
-    size={small ? 'small' : 'medium'}
-    startIcon={<AddIcon fontSize="small" />}
-  >
-    Add Item
-  </Button>
-);
+import AddButton from './table-placed-items/add-item-button';
+import DeleteButton from './table-placed-items/delete-item-button';
+import StatusDisplay from './table-placed-items/status-display';
 
 type TablePlacedItemsProps = {
   filterValue?: string
@@ -145,7 +83,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                 {placeId
                   && (
                     <TableCell padding="none" align="left">
-                      {/* <IconButton size="small"><EditRoundedIcon color="info" /></IconButton> */}
+                      <IconButton size="small"><EditRoundedIcon color="info" /></IconButton>
                       <DeleteButton row={row} />
                     </TableCell>
                   )}
@@ -232,7 +170,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                     {placeId
                       && (
                         <TableCell align="right">
-                          {/* <IconButton onClick={handleOpen}><EditRoundedIcon color="info" /></IconButton> */}
+                          <IconButton onClick={handleOpen}><EditRoundedIcon color="info" /></IconButton>
                           <DeleteButton row={row} />
                         </TableCell>
                       )}
