@@ -79,7 +79,7 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
           alignItems="center"
           pt="15px"
         >
-          <img style={{ width: '170px', height: '150px' }} src="shoping.webp" alt="shoping" />
+          <img style={{ width: '170px', height: '150px' }} src="shoping.jpg" alt="shoping" />
           <DialogTitle sx={{ textAlign: 'center', fontSize: '1.8rem' }}>New item</DialogTitle>
         </Stack>
         <DialogContent>

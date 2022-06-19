@@ -69,7 +69,7 @@ const Dashboard: React.FC = () => {
         alignItems="center"
         spacing={3}
       >
-        <img style={isSmall ? { width: '380px', height: '250px' } : { width: '770px', height: '550px' }} src="mainPhoto.webp" alt="shoping" />
+        <img style={isSmall ? { width: '480px', height: '230px' } : { width: '970px', height: '420px' }} src="dashboardPhoto.jpg" alt="shoping" />
         <Typography variant="h2" sx={isSmall ? { fontSize: '31px', fontWeight: 700, pb: 4 } : { fontWeight: 700, pb: 4 }}>
           Organize it all with Bunker!
         </Typography>

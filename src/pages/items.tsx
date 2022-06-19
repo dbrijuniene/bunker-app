@@ -16,10 +16,10 @@ const Items: React.FC = () => {
       <Box>
         <img
           style={isSmall ? { display: 'none' } : { width: '350px', height: '250px' }}
-          src="womanInShop.webp"
-          alt="shoping"
+          src="womanShopping.jpg"
+          alt="additems"
         />
-        <img style={isSmall ? { width: '260px', height: '200px' } : { width: '350px', height: '250px' }} src="allDone.webp" alt="shoping" />
+        <img style={isSmall ? { width: '260px', height: '200px' } : { width: '350px', height: '250px' }} src="allChecked.jpg" alt="shoping" />
       </Box>
       <TextField
         value={filterValue}

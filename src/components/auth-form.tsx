@@ -95,7 +95,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           <Button variant="text" type="reset" onClick={onReset}>{resetText}</Button>
         )}
       </Paper>
-      <img style={isSmall ? { width: '460px', height: '200px' } : { width: '650px', height: '250px' }} src="organize.webp" alt="organize" />
+      <img style={isSmall ? { width: '460px', height: '200px' } : { width: '650px', height: '250px' }} src="organize.jpg" alt="organize" />
     </Container>
   );
 };
