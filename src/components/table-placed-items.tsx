@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Grid, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, useMediaQuery,
 } from '@mui/material';
@@ -9,6 +9,7 @@ import ItemDialog from './item-dialog';
 import AddButton from './table-placed-items/add-item-button';
 import StatusDisplay from './table-placed-items/status-display';
 import TableRowActions from './table-placed-items/table-row-actions';
+import { PlacedItem } from '../types';
 
 type TablePlacedItemsProps = {
   filterValue?: string
@@ -32,6 +33,8 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
   const [open, setOpen] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(placeId ? 5 : -1);
+  const [editItem, setEditItem] = React.useState<PlacedItem | undefined>(undefined);
+  const [count, setCount] = React.useState<number>(0);
 
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -41,12 +44,21 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
     setPage(0);
   };
 
-  const handleClose = () => {
+  const handleDialogClose = () => {
     setOpen(false);
   };
 
-  const handleOpen = () => {
-    setOpen(true);
+  const didMountRef = useRef(false);
+  useEffect(() => {
+    if (didMountRef.current) {
+      setOpen(true);
+    }
+    didMountRef.current = true;
+  }, [editItem, count]);
+
+  const handleDialogOpen = (row?: PlacedItem) => {
+    setEditItem(row);
+    setCount(count + 1);
   };
 
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
@@ -82,7 +94,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                 {placeId
                   && (
                     <TableCell padding="none" align="left">
-                      <TableRowActions handleOpen={handleOpen} row={row} />
+                      <TableRowActions onEdit={() => handleDialogOpen(row)} row={row} />
                     </TableCell>
                   )}
               </TableRow>
@@ -105,7 +117,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                         item
                         xs={2}
                       >
-                        <AddButton handleOpen={handleOpen} small />
+                        <AddButton handleOpen={() => handleDialogOpen()} small />
                       </Grid>
                       <Grid
                         item
@@ -168,7 +180,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                     {placeId
                       && (
                         <TableCell align="right">
-                          <TableRowActions handleOpen={handleOpen} row={row} />
+                          <TableRowActions onEdit={() => handleDialogOpen(row)} row={row} />
                         </TableCell>
                       )}
                   </TableRow>
@@ -195,7 +207,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                             alignItems: 'center',
                           }}
                         >
-                          <AddButton handleOpen={handleOpen} />
+                          <AddButton handleOpen={() => handleDialogOpen()} />
                         </Grid>
                         <Grid
                           item
@@ -230,7 +242,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
               )}
           </Table>
         )}
-      {placeId && <ItemDialog open={open} handleClose={handleClose} placeId={placeId} />}
+      {placeId && <ItemDialog open={open} handleClose={handleDialogClose} placeId={placeId} editItem={editItem} />}
     </TableContainer>
   );
 };
