@@ -48,6 +48,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
     setOpen(false);
   };
 
+  // https://stackoverflow.com/questions/53179075/with-useeffect-how-can-i-skip-applying-an-effect-upon-the-initial-render
   const didMountRef = useRef(false);
   useEffect(() => {
     if (didMountRef.current) {
