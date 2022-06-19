@@ -1,15 +1,14 @@
 import React from 'react';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import {
-  Grid, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, useMediaQuery,
+  Grid, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { format } from 'date-fns';
 import { useRootSelector } from '../store/hooks';
 import ItemDialog from './item-dialog';
 import AddButton from './table-placed-items/add-item-button';
-import DeleteButton from './table-placed-items/delete-item-button';
 import StatusDisplay from './table-placed-items/status-display';
+import TableRowActions from './table-placed-items/table-row-actions';
 
 type TablePlacedItemsProps = {
   filterValue?: string
@@ -83,8 +82,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                 {placeId
                   && (
                     <TableCell padding="none" align="left">
-                      <IconButton size="small"><EditRoundedIcon color="info" /></IconButton>
-                      <DeleteButton row={row} />
+                      <TableRowActions handleOpen={handleOpen} row={row} />
                     </TableCell>
                   )}
               </TableRow>
@@ -170,8 +168,7 @@ const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeI
                     {placeId
                       && (
                         <TableCell align="right">
-                          <IconButton onClick={handleOpen}><EditRoundedIcon color="info" /></IconButton>
-                          <DeleteButton row={row} />
+                          <TableRowActions handleOpen={handleOpen} row={row} />
                         </TableCell>
                       )}
                   </TableRow>
