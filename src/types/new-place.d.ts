@@ -1,4 +1,4 @@
 export type NewPlace = {
-  userId: number,
+  userId: string,
   name: string,
 };

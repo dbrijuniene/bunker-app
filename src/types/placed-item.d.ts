@@ -1,8 +1,8 @@
 import Status from './status-enum';
 
 export type PlacedItem = {
-  id: number,
-  placeId: number,
+  id: string,
+  placeId: string,
   name: string,
   quantity: number,
   units: string,

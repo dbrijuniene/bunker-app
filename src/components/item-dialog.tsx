@@ -18,7 +18,7 @@ import { PlacedItem, NewPlacedItem } from '../types';
 type ItemDialogProps = {
   open: boolean,
   handleClose: () => void,
-  placeId: number,
+  placeId: string,
   editItem: PlacedItem | undefined
 };
 

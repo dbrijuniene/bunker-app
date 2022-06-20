@@ -31,7 +31,7 @@ const AddPlaceDialog: React.FC<AddPlaceDialogProps> = ({
         .required('Required'),
     }),
     onSubmit: (values, { resetForm }) => {
-      dispatch(addPlace({ name: values.name, userId: user?.id as number }));
+      dispatch(addPlace({ name: values.name, userId: user?.id as string }));
       resetForm();
       handleClose();
     },

@@ -13,7 +13,7 @@ import { PlacedItem } from '../types';
 
 type TablePlacedItemsProps = {
   filterValue?: string
-  placeId?: number
+  placeId?: string
 };
 
 const TablePlacedItems: React.FC<TablePlacedItemsProps> = ({ filterValue, placeId }) => {

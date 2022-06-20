@@ -5,7 +5,7 @@ import {
 } from '../types/index';
 import { getItems } from './items-slice';
 
-export const getPlaces = createAsyncThunk('places/getPlaces', async (userId: number, ThunkAPI) => {
+export const getPlaces = createAsyncThunk('places/getPlaces', async (userId: string, ThunkAPI) => {
   const response = await axios.get<Place[]>(
     `http://localhost:8000/places?userId=${userId}`,
   );
@@ -19,7 +19,7 @@ export const placesSlice = createSlice({
   name: 'places',
   initialState,
   reducers: {
-    removePlace: (state: PlacesState, action: PayloadAction<number>) => {
+    removePlace: (state: PlacesState, action: PayloadAction<string>) => {
       const index = state.map((place) => place.id).indexOf(action.payload);
       state.splice(index, 1);
     },

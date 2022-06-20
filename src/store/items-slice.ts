@@ -3,7 +3,7 @@ import axios from 'axios';
 import { formatISO } from 'date-fns';
 import { PlacedItemsState, PlacedItem, NewPlacedItem } from '../types/index';
 
-export const getItems = createAsyncThunk('items/getItems', async (placeIds: number[]) => {
+export const getItems = createAsyncThunk('items/getItems', async (placeIds: string[]) => {
   const response = await axios.get<PlacedItem[]>(
     `http://localhost:8000/items?placeId=${placeIds.join('&placeId=')}`,
   );
@@ -17,16 +17,16 @@ export const itemsSlice = createSlice({
   initialState,
   reducers: {
     removeItem:
-      (state: PlacedItemsState, action: PayloadAction<number>) => {
+      (state: PlacedItemsState, action: PayloadAction<string>) => {
         const index = state.map((item) => item.id).indexOf(action.payload);
         state.splice(index, 1);
       },
     removeItemsByPlaceId:
-      (state: PlacedItemsState, action: PayloadAction<number>) => state.filter((s) => s.placeId !== action.payload),
+      (state: PlacedItemsState, action: PayloadAction<string>) => state.filter((s) => s.placeId !== action.payload),
     addItem:
       (state: PlacedItemsState, action: PayloadAction<NewPlacedItem>) => {
         state.push({
-          id: state[state.length - 1].id + 1,
+          id: `${state[state.length - 1].id}+1`,
           ...action.payload,
           validUntil: formatISO(action.payload.validUntil),
         });

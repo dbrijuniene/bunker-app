@@ -1,4 +1,4 @@
 export type PlaceUpdate = {
-  id: number,
+  id: string,
   newName: string,
 };
