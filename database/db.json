@@ -1,13 +1,13 @@
 {
   "users": [
     {
-      "id": 0,
+      "id": "62b0e3a7669166c0db446b58",
       "name": "Rasa",
       "email": "test@test.com",
       "password": "1234"
     },
     {
-      "id": 1,
+      "id": "62b0e3a7669166c0db446b59",
       "name": "a",
       "email": "a@a.a",
       "password": "a"
@@ -15,128 +15,128 @@
   ],
   "items": [
     {
-      "id": 1,
-      "placeId": 2,
+      "id": "62b0e42b669166c0db446b5c",
+      "placeId": "62b0e54c669166c0db446b6b",
       "name": "Buckwheat",
       "units": "g",
       "quantity": 500,
       "status": 1,
-      "validUntil": "2022-12-25"
+      "validUntil": "2022-12-25T00:00:00.000+00:00"
     },
     {
-      "id": 2,
-      "placeId": 2,
+      "id": "62b0e42b669166c0db446b5d",
+      "placeId": "62b0e54c669166c0db446b6b",
       "name": "Canned meat",
       "units": "pieces",
       "quantity": 5,
       "status": 0,
-      "validUntil": "2022-12-18"
+      "validUntil": "2022-12-18T00:00:00.000+00:00"
     },
     {
-      "id": 3,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b5e",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Water",
       "units": "l",
       "quantity": 5,
       "status": 0,
-      "validUntil": "2022-04-14"
+      "validUntil": "2022-04-14T00:00:00.000+00:00"
     },
     {
-      "id": 4,
-      "placeId": 3,
+      "id": "62b0e42b669166c0db446b5f",
+      "placeId": "62b0e54c669166c0db446b6c",
       "name": "Canned tuna",
       "units": "pieces",
       "quantity": 10,
       "status": 1,
-      "validUntil": "2022-05-30"
+      "validUntil": "2022-05-30T00:00:00.000+00:00"
     },
     {
-      "id": 5,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b60",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Buckwheat dried",
       "units": "g",
       "quantity": 500,
       "status": 1,
-      "validUntil": "2022-12-15"
+      "validUntil": "2022-12-15T00:00:00.000+00:00"
     },
     {
-      "id": 6,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b61",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Canned meat low-sodium",
       "units": "pieces",
       "quantity": 5,
       "status": 0,
-      "validUntil": "2022-12-18"
+      "validUntil": "2022-12-18T00:00:00.000+00:00"
     },
     {
-      "id": 7,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b62",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Sparkling water",
       "units": "l",
       "quantity": 5,
       "status": 0,
-      "validUntil": "2022-04-14"
+      "validUntil": "2022-04-14T00:00:00.000+00:00"
     },
     {
-      "id": 8,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b63",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Canned tuna low-sodium",
       "units": "pieces",
       "quantity": 10,
       "status": 1,
-      "validUntil": "2022-05-30"
+      "validUntil": "2022-05-30T00:00:00.000+00:00"
     },
     {
-      "id": 9,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b64",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Buckwheat dried low-carb",
       "units": "g",
       "quantity": 500,
       "status": 1,
-      "validUntil": "2022-12-25"
+      "validUntil": "2022-12-25T00:00:00.000+00:00"
     },
     {
-      "id": 10,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b65",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Canned meat salted",
       "units": "pieces",
       "quantity": 5,
       "status": 0,
-      "validUntil": "2022-12-18"
+      "validUntil": "2022-12-18T00:00:00.000+00:00"
     },
     {
-      "id": 11,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b66",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Sparkling water salty",
       "units": "l",
       "quantity": 5,
       "status": 0,
-      "validUntil": "2022-04-14"
+      "validUntil": "2022-04-14T00:00:00.000+00:00"
     },
     {
-      "id": 12,
-      "placeId": 1,
+      "id": "62b0e42b669166c0db446b67",
+      "placeId": "62b0e54c669166c0db446b6a",
       "name": "Canned tuna high-protein",
       "units": "pieces",
       "quantity": 10,
       "status": 1,
-      "validUntil": "2022-05-30"
+      "validUntil": "2022-05-30T00:00:00.000+00:00"
     }
   ],
   "places": [
     {
-      "id": 1,
-      "userId": 1,
+      "id": "62b0e54c669166c0db446b6a",
+      "userId": "62b0e3a7669166c0db446b59",
       "name": "Backpack"
     },
     {
-      "id": 2,
-      "userId": 1,
+      "id": "62b0e54c669166c0db446b6b",
+      "userId": "62b0e3a7669166c0db446b59",
       "name": "Home storage"
     },
     {
-      "id": 3,
-      "userId": 0,
+      "id": "62b0e54c669166c0db446b6c",
+      "userId": "62b0e3a7669166c0db446b58",
       "name": "Backpack"
     }
   ]
