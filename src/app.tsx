@@ -1,15 +1,30 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import {
+  Routes, Route, Navigate, useLocation, useNavigate,
+} from 'react-router-dom';
 import Main from './pages/main';
 import Items from './pages/items';
 import Places from './pages/places';
 import Dashboard from './pages/dashboard';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/registration';
-import { useRootSelector } from './store/hooks';
+import { useRootSelector, useAppDispatch } from './store/hooks';
+import { reload } from './store/shared-slice';
 
 const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const user = useRootSelector((state) => state.shared.user);
+
+  useEffect(() => {
+    if (!user && sessionStorage.getItem('id')) {
+      const id = sessionStorage.getItem('id') as string;
+      dispatch(reload(id)).unwrap().then(() => {
+        navigate(location.pathname);
+      });
+    }
+  }, []);
 
   return (
     <Routes>

@@ -30,6 +30,19 @@ export const register = createAsyncThunk('shared/register', async (newUser: User
   }
 });
 
+export const reload = createAsyncThunk('shared/reload', async (id: string, thunkAPI) => {
+  const response = await axios.get<TemporaryUser[]>(
+    `http://localhost:8000/users?id=${id}`,
+  );
+
+  if (response.data && response.data.length > 0) {
+    thunkAPI.dispatch(getPlaces(response.data[0].id));
+    return response.data[0];
+  }
+
+  return thunkAPI.rejectWithValue('Relogin');
+});
+
 const initialState = (): SharedState => ({
   loading: false,
   serverErrorMsg: undefined,
@@ -53,7 +66,7 @@ export const sharedSlice = createSlice({
       state.user = action.payload;
     },
     logout: () => {
-      // Implementuota index.tsx rootReduceryje
+      // Implementuota index.tsx rootReduceryje, nes reikia visus slic'us pravalyti.
       // https://stackoverflow.com/questions/59061161/how-to-reset-state-of-redux-store-when-using-configurestore-from-reduxjs-toolki
     },
   },
@@ -83,6 +96,17 @@ export const sharedSlice = createSlice({
       state.loading = false;
       state.user = { id: action.payload.id, name: action.payload.name };
       sessionStorage.setItem('id', action.payload.id as unknown as string);
+    });
+    builder.addCase(reload.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(reload.rejected, (state, action) => {
+      state.loading = false;
+      state.serverErrorMsg = action.payload as string;
+    });
+    builder.addCase(reload.fulfilled, (state, action) => {
+      state.user = { id: action.payload.id, name: action.payload.name };
+      state.loading = false;
     });
   },
 });
