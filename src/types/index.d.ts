@@ -1,7 +1,7 @@
 export { PlaceUpdate } from './place-update';
 export { NewPlacedItem } from './new-placed-item';
 export { default as Crudentials } from './crudentials';
-export { default as TemporaryUser } from './temporary-user';
+export { default as LoggedInViewModel } from './logged-in-view-model';
 export { default as UserRegistration } from './user-registration';
 export { Place } from './place';
 export { PlacedItem } from './placed-item';

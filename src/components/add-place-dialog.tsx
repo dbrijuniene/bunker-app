@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useAppDispatch, useRootSelector } from '../store/hooks';
+import { useAppDispatch } from '../store/hooks';
 import { addPlace } from '../store/places-slice';
 
 type AddPlaceDialogProps = {
@@ -20,7 +20,6 @@ const AddPlaceDialog: React.FC<AddPlaceDialogProps> = ({
   open, handleClose,
 }) => {
   const dispatch = useAppDispatch();
-  const user = useRootSelector((state) => state.shared.user);
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +30,7 @@ const AddPlaceDialog: React.FC<AddPlaceDialogProps> = ({
         .required('Required'),
     }),
     onSubmit: (values, { resetForm }) => {
-      dispatch(addPlace({ name: values.name, userId: user?.id as string }));
+      dispatch(addPlace(values.name));
       resetForm();
       handleClose();
     },

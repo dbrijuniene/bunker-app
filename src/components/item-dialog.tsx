@@ -11,7 +11,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useAppDispatch } from '../store/hooks';
-import { addItem, editItem as editItemAction } from '../store/items-slice';
+import { addItem, updateItem as editItemAction } from '../store/items-slice';
 import Status from '../types/status-enum';
 import { PlacedItem, NewPlacedItem } from '../types';
 
@@ -60,7 +60,11 @@ const ItemDialog: React.FC<ItemDialogProps> = ({
         units: values.units,
         validUntil: values.validUntil as unknown as Date,
       };
-      dispatch(editItem ? editItemAction(values as PlacedItem) : addItem(newItem));
+      if (editItem) {
+        dispatch(editItemAction(values as PlacedItem));
+      } else {
+        dispatch(addItem(newItem));
+      }
       resetForm();
       handleClose();
     },

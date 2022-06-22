@@ -18,11 +18,10 @@ const App: React.FC = () => {
   const user = useRootSelector((state) => state.shared.user);
 
   useEffect(() => {
-    if (!user && sessionStorage.getItem('id')) {
-      const id = sessionStorage.getItem('id') as string;
-      dispatch(reload(id)).unwrap().then(() => {
+    if (!user && sessionStorage.getItem(process.env.REACT_APP_AUTH_TOKEN as string)) {
+      dispatch(reload()).unwrap().then(() => {
         navigate(location.pathname);
-      });
+      }).catch(() => navigate('/'));
     }
   }, []);
 
