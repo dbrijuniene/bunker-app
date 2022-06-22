@@ -4,5 +4,5 @@
 2. Atsiųskite šią repozitoriją į savo kompiuterį;
 3. Atsisiuntus kodą, paleiskite komandą `npm i` naudodami terminalą;
 4. Irašykite reikšmes į env. failą, kad veiktų su back-end aplikacija;
-5. Pradėjus veikti back-end'o mock'ui, kitame terminale paleiskite komandą `npm start`;
+5. Terminale paleiskite komandą `npm start`;
 6. Susidiegus aplikacijai, turėtų atsidaryti tinklalapis adresu [http://localhost:3000](http://localhost:3000).
